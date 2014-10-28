@@ -92,6 +92,15 @@ Path.copy = {
 };
 
 
+/* Mocha Path */
+Path.mocha = {
+	js: {
+		test: ['test/**/*.js']
+	}
+};
+
+
+
 /* Watch Paths */
 Path.watch = {
 	coffee: [Path.src.coffee.folder + '**/*.coffee']

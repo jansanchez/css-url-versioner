@@ -168,7 +168,16 @@ gulp.task('default', [], function (cb) {
 
 
 gulp.task('mocha', function () {
-    return gulp.src('test/**/*.js', {read: false})
-    .pipe(plugins.mocha({reporter: 'spec'}));
+    return gulp.src(path.mocha.js.test, {read: false})
+    .pipe(plugins.mocha({
+        reporter: 'spec',
+        recursive: true,
+        globals: {
+            should: require('should'),
+            assert: require('assert')
+        }        
+    }
+    ));
 });
+
 

@@ -4,16 +4,15 @@ Test: cssUrl
 
 #var cssUrl = require('../../dist/lib/')
 
-describe('Recursive Concat', () ->
+describe('cssUrl', () ->
 	options = {}
 	
 	beforeEach( () ->
 
 	)
 
-	it.skip('uno.', (done) ->
-
+	it('Igualdad simple', () ->
+		'igual'.should.be.equal('igual')
 	)
 )
-
 

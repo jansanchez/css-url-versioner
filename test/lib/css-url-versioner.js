@@ -2,9 +2,11 @@
 /*
 Test: cssUrl
  */
-describe('Recursive Concat', function() {
+describe('cssUrl', function() {
   var options;
   options = {};
   beforeEach(function() {});
-  return it.skip('uno.', function(done) {});
+  return it('Igualdad simple', function() {
+    return 'igual'.should.be.equal('igual');
+  });
 });
