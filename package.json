@@ -1,6 +1,6 @@
 {
   "name": "css-url-versioner",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "css-url-versioner",
   "main": "dist/index.js",
   "scripts": {
@@ -42,8 +42,5 @@
     "run-sequence": "^0.3.6",
     "should": "~4.0.4"
   },
-  "dependencies": {
-
-  }
+  "dependencies": {}
 }
-  
