@@ -35,7 +35,7 @@ var coffeeTasks = ['js'];
 */
 
 
-gulp.task('log', ['bump'], function () {
+gulp.task('log', function () {
     return changelog({
         repository: package.repository.url,
         version: package.version
@@ -45,13 +45,16 @@ gulp.task('log', ['bump'], function () {
 });
 
 gulp.task('bump', function(){
-    gulp.src(['./package.json'])
+    return gulp.src(['./package.json'])
     .pipe(bump())
     .pipe(gulp.dest('./'))
     .pipe(filter('package.json'))
     .pipe(tagVersion());
 });
 
+gulp.task('version', function () {
+    plugins.runSequence(['bump', 'log'], cb);
+});
 
 /*!!
 * 
