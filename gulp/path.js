@@ -5,48 +5,60 @@
  *
  */
 
-var Path = {},
-	d = new Date(),
-	currentDate = '';
-
-currentDate = d.getDate().toString() + "-" + (d.getMonth()+1).toString() + "-" + d.getFullYear().toString() + "_" + d.getHours().toString() + "-"+ d.getMinutes().toString();
-
+var Path = {};
 
 Path.src = { folder: 'source/' };
-
-Path.src.coffee = Path.src.folder + 'coffee/';
+Path.src.coffee = {};
+Path.src.coffee.folder = Path.src.folder + 'coffee/'
+Path.src.coffee.package = Path.src.coffee.folder + 'package/';
+Path.src.coffee.test = Path.src.coffee.folder + 'test/';
 
 Path.dest = {};
-
-Path.dest.folder = 'dist/';
-Path.dest.js = Path.dest.folder;
+Path.dest.folder = '';
+Path.dest.js = {};
+Path.dest.js.package = Path.dest.folder + 'dist/';
+Path.dest.js.test    = Path.dest.folder + 'test/';
 
 
 /* Coffee Path */
 Path.coffee = {
 	default : {
 		src: [
-			Path.src.coffee + '**/*.coffee',
-			'!' + Path.src.coffee + '_**/*.coffee',
-			'!' + Path.src.coffee + '**/_*.coffee'
+			Path.src.coffee.folder + '**/*.coffee',
+			'!' + Path.src.coffee.folder + '_**/*.coffee',
+			'!' + Path.src.coffee.folder + '**/_*.coffee'
 		],
-		dest: Path.dest.js
+		dest: Path.dest.js.package
+	},	
+	package : {
+		src: [
+			Path.src.coffee.package + '**/*.coffee',
+			'!' + Path.src.coffee.package + '_**/*.coffee',
+			'!' + Path.src.coffee.package + '**/_*.coffee'
+		],
+		dest: Path.dest.js.package
+	},
+	test : {
+		src: [
+			Path.src.coffee.test + '**/*.coffee',
+			'!' + Path.src.coffee.test + '_**/*.coffee',
+			'!' + Path.src.coffee.test + '**/_*.coffee'
+		],
+		dest: Path.dest.js.test
 	}
+
 };
+
 
 /* Javascript Path */
 Path.javascript = {
-	default: {
-		src: [
-			Path.dest.js + '**/*.js'
-		],
-		dest: Path.dest.js
-	},
 	lint: [
-		Path.dest.js + '**/*.js'
+		Path.dest.js.package + '**/*.js',
+		Path.dest.js.test + '**/*.js'
 	],
 	complexity: [
-		Path.dest.js + '**/*.js'
+		Path.dest.js.package + '**/*.js',
+		Path.dest.js.test + '**/*.js'
 	]
 };
 
@@ -55,14 +67,34 @@ Path.javascript = {
 Path.clean = {
 	js: {
 		package: [
-			Path.dest.js + '**/*.*'
+			Path.dest.js.package + '**/*.*'
+		],
+		test: [
+			Path.dest.js.test + '**/*.*',
+			Path.dest.folder + 'dist/test/'
 		]
 	}
 };
 
+
+/* Copy Path */
+Path.copy = {
+	js: {
+		test: {
+			base: Path.dest.folder,
+			src: [
+				Path.dest.folder + 'dist/test/**/*.*'
+			],
+			dest: Path.dest.js.test
+			
+		}
+	}
+};
+
+
 /* Watch Paths */
 Path.watch = {
-	coffee: [Path.src.coffee + '**/*.coffee']
+	coffee: [Path.src.coffee.folder + '**/*.coffee']
 };
 
 

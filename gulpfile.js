@@ -26,8 +26,32 @@ plugins.runSequence = require('run-sequence');
 
 var coffeeTasks = ['js'];
 
-var d = new Date(),
-    currentDate = d.getDate().toString() + "-" + (d.getMonth()+1).toString() + "-" + d.getFullYear().toString() + "_" + d.getHours().toString();
+
+/*!!
+* 
+* Tareas para changelog, tag
+*
+* tarea principal: gulp
+*/
+
+
+gulp.task('log', ['bump'], function () {
+    return changelog({
+        repository: package.repository.url,
+        version: package.version
+    }, function(err, log) {
+        fs.writeFileSync('CHANGELOG.md', log, 'utf8');
+    });
+});
+
+gulp.task('bump', function(){
+    gulp.src(['./package.json'])
+    .pipe(bump())
+    .pipe(gulp.dest('./'))
+    .pipe(filter('package.json'))
+    .pipe(tagVersion());
+});
+
 
 /*!!
 * 
@@ -36,13 +60,37 @@ var d = new Date(),
 * tarea principal: gulp clean
 */
 
-gulp.task('clean:js', function () {
+gulp.task('clean:js:package', function () {
     return gulp.src(path.clean.js.package, options.clean.general.src)
     .pipe(plugins.rimraf(options.clean.general.plugin));
 });
 
+gulp.task('clean:js:test', function () {
+    return gulp.src(path.clean.js.test, options.clean.general.src)
+    .pipe(plugins.rimraf(options.clean.general.plugin));
+});
+
+gulp.task('clean:js', function (cb) {
+    return plugins.runSequence(['clean:js:package', 'clean:js:test'], cb);
+});
+
 gulp.task('clean', function (cb) {
     plugins.runSequence(['clean:js'], cb);
+});
+
+
+/*!!
+* 
+* Tareas para copiar archivos
+*
+* tarea principal: gulp copy
+*/
+
+gulp.task('copy:js:test', function () {
+    gulp.src(path.copy.js.test.src, {
+            base: path.copy.js.test.base
+        })
+        .pipe(gulp.dest(path.copy.js.test.dest));
 });
 
 
@@ -94,7 +142,7 @@ gulp.task('complexity', function(){
 
 
 gulp.task('js', function(cb) {
-    plugins.runSequence('clean:js', 'coffee', 'lint', 'complexity', cb);
+    plugins.runSequence('clean:js', 'coffee', 'copy:js:test', 'clean:js:test', 'lint', 'complexity', cb);
 });
 
 
@@ -116,27 +164,3 @@ gulp.task('default', [], function (cb) {
 });
 
 
-/*!!
-* 
-* Tareas para changelog, tag
-*
-* tarea principal: gulp
-*/
-
-
-gulp.task('log', ['bump'], function () {
-    return changelog({
-        repository: package.repository.url,
-        version: package.version
-    }, function(err, log) {
-        fs.writeFileSync('CHANGELOG.md', log, 'utf8');
-    });
-});
-
-gulp.task('bump', function(){
-    gulp.src(['./package.json'])
-    .pipe(bump())
-    .pipe(gulp.dest('./'))
-    .pipe(filter('package.json'))
-    .pipe(tagVersion());
-});
