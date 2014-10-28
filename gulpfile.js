@@ -142,7 +142,7 @@ gulp.task('complexity', function(){
 
 
 gulp.task('js', function(cb) {
-    plugins.runSequence('clean:js', 'coffee', 'copy:js:test', 'clean:js:test', 'lint', 'complexity', cb);
+    plugins.runSequence('clean:js', 'coffee', 'copy:js:test', 'clean:js:test', 'lint', 'complexity', 'mocha', cb);
 });
 
 
@@ -163,4 +163,9 @@ gulp.task('default', [], function (cb) {
     plugins.runSequence('js', cb);
 });
 
+
+gulp.task('mocha', function () {
+    return gulp.src('test/**/*.js', {read: false})
+    .pipe(plugins.mocha({reporter: 'spec'}));
+});
 

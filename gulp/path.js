@@ -70,7 +70,7 @@ Path.clean = {
 			Path.dest.js.package + '**/*.*'
 		],
 		test: [
-			Path.dest.js.test + '**/*.*',
+			Path.dest.js.test + '**/*.js',
 			Path.dest.folder + 'dist/test/'
 		]
 	}
