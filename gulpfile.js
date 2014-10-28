@@ -1,0 +1,141 @@
+/*!!
+ * 
+ * gulpfile.js
+ * @author: Jan Sanchez
+ *
+ */
+
+var gulp = require('gulp'),
+stylish = require('jshint-stylish'),
+changelog = require('conventional-changelog'),
+bump = require('gulp-bump'),
+tagVersion = require('gulp-tag-version'),
+filter = require('gulp-filter'),
+package = require('./package.json'),
+loadPlugins = require('gulp-load-plugins'),
+notify = require("node-notifier"),
+path = require('./gulp/path'),
+options = require('./gulp/options'),
+config = require('./gulp/config.local');
+
+var notifier = new notify(),
+plugins = loadPlugins();
+
+plugins.runSequence = require('run-sequence');
+
+var coffeeTasks = ['js'];
+
+var d = new Date(),
+    currentDate = d.getDate().toString() + "-" + (d.getMonth()+1).toString() + "-" + d.getFullYear().toString() + "_" + d.getHours().toString();
+
+/*!!
+* 
+* Tareas individuales para limpiar los archivos generados
+*
+* tarea principal: gulp clean
+*/
+
+gulp.task('clean:js', function () {
+    return gulp.src(path.clean.js.package, options.clean.general.src)
+    .pipe(plugins.rimraf(options.clean.general.plugin));
+});
+
+gulp.task('clean', function (cb) {
+    plugins.runSequence(['clean:js'], cb);
+});
+
+
+/*!!
+* 
+* Tareas para generar, concatenar, lintear Javascript
+*
+* tarea principal: gulp js
+*/
+
+gulp.task('coffee', function() {
+    return gulp.src(path.coffee.default.src)
+    .pipe(plugins.coffee(options.coffee.general).on('error', function(err){
+        console.log('');
+        console.log(err.name + " in " + err.plugin);
+        console.log('Message: ' + err.message);
+        console.log('Stack: ' + err.stack);
+
+        var isLinux = /^linux/.test(process.platform);
+        if (isLinux){
+            notifier.notify({
+                title: 'Plugin: ' + err.plugin,
+                message: err.name + ' in ' + err.plugin,
+                contentImage: __dirname + "/gulp/img/logo.png",
+                appIcon: __dirname + "/gulp/img/logo.png",
+                open: "file://" + __dirname + "/gulp/img/logo.png"
+            }, function(error, response) {
+                console.log(response);
+            });
+        }
+
+    }))
+    .pipe(gulp.dest(path.coffee.default.dest));
+});
+
+
+gulp.task('lint', function() {
+    return gulp.src(path.javascript.lint)
+        .pipe(plugins.jshint(options.js.lint.jshintrc))
+        .pipe(plugins.jshint.reporter(options.js.lint.reporterStyle))
+        .pipe(plugins.jshint.reporter(options.js.lint.reporter));
+});
+
+
+gulp.task('complexity', function(){
+    return gulp.src(path.javascript.complexity)
+    .pipe(plugins.complexity());
+});
+
+
+gulp.task('js', function(cb) {
+    plugins.runSequence('clean:js', 'coffee', 'lint', 'complexity', cb);
+});
+
+
+gulp.task('watch', function () {
+
+    gulp.watch(path.watch.coffee, coffeeTasks);
+});
+
+
+/*!!
+* 
+* Tareas por default
+*
+* tarea principal: gulp
+*/
+
+gulp.task('default', [], function (cb) {
+    plugins.runSequence('js', cb);
+});
+
+
+/*!!
+* 
+* Tareas para changelog, tag
+*
+* tarea principal: gulp
+*/
+
+
+gulp.task('log', ['bump'], function () {
+    return changelog({
+        repository: package.repository.url,
+        version: package.version
+    }, function(err, log) {
+        fs.writeFileSync('CHANGELOG.md', log, 'utf8');
+    });
+});
+
+gulp.task('bump', function(){
+    gulp.src(['./package.json'])
+    .pipe(bump())
+    .pipe(gulp.dest('./'))
+    .pipe(filter('package.json'))
+    .pipe(tagVersion());
+});

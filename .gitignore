@@ -1,0 +1,7 @@
+# Ignored Files
+
+node_modules
+demo
+npm-debug.log
+.tar.gz
+
