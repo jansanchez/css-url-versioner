@@ -12,7 +12,7 @@ var CssUrlVersioner, Execute, extend;
 
 extend = require('util')._extend;
 
-Execute = require('./execute.js');
+Execute = require('./execute');
 
 
 /*
@@ -22,19 +22,19 @@ Execute = require('./execute.js');
 CssUrlVersioner = function(settings) {
   this["default"] = {
     variable: 'v',
-    lastCommit: true,
-    date: false,
-    formatDate: 'd-M-Y'
+    version: '',
+    lastcommit: false
   };
   this.sha1 = null;
   this.version = null;
   this.queryString = null;
   this.options = extend(this["default"], settings);
   this.setDefaultVersion();
-  if (this.options.lastCommit) {
+  if (this.options.lastcommit) {
     this.getLastCommit();
   }
   this.getQueryString();
+  console.log(this.queryString);
   return this;
 };
 
@@ -43,7 +43,6 @@ CssUrlVersioner.prototype.getLastCommit = function() {
   command = "git log -1 --format=%h";
   exec = new Execute();
   this.sha1 = exec.runCommand(command);
-  console.log('sha1: ' + this.sha1);
 };
 
 CssUrlVersioner.prototype.setDefaultVersion = function() {
@@ -53,8 +52,11 @@ CssUrlVersioner.prototype.setDefaultVersion = function() {
 };
 
 CssUrlVersioner.prototype.getQueryString = function() {
-  if (this.options.lastCommit) {
+  if (this.options.lastcommit) {
     this.version = this.sha1;
+  }
+  if (this.options.version !== '') {
+    this.version = this.options.version;
   }
   this.queryString = '?' + this.options.variable + '=' + this.version;
 };

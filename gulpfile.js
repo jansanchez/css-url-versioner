@@ -190,11 +190,7 @@ gulp.task('versioner', function (cb) {
     fs.readFile('test/css/test.css', 'utf8', function (err, data) {
         cssVersioner({
             content: data,
-            variable: 'v',
-            version: '123456',
-            lastCommit: true,
-            date: true,
-            formatDate: 'd-M-Y'
+            variable: 'v'
         })
     });
 });

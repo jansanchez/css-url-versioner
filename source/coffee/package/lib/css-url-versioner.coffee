@@ -9,8 +9,7 @@ cssUrlVersioner
 ###
 
 extend  = require('util')._extend
-Execute = require('./execute.js')
-#execute = require("child_process").exec
+Execute = require('./execute')
 #fs      = require('fs')
 
 
@@ -21,9 +20,8 @@ Execute = require('./execute.js')
 CssUrlVersioner = (settings) ->
 	@default = {
 		variable: 'v',
-		lastCommit: true,
-		date: false,
-		formatDate: 'd-M-Y'
+		version: ''
+		lastcommit: false
 	}
 	@sha1 = null
 	@version = null
@@ -31,11 +29,12 @@ CssUrlVersioner = (settings) ->
 	@options = extend(this.default, settings)
 
 	@setDefaultVersion()
-	if @options.lastCommit
+	if @options.lastcommit
 		@getLastCommit()
+	
 	@getQueryString()
-
-	#console.log @queryString
+	
+	console.log @queryString
 	@
 
 
@@ -44,18 +43,20 @@ CssUrlVersioner::getLastCommit = () ->
 
 	exec = new Execute()
 	@sha1 = exec.runCommand(command)
-	console.log('sha1: ' + @sha1)
 	return
 
 CssUrlVersioner::setDefaultVersion = () ->
 	d = new Date()
-	#d.getHours().toString() + "-"+ d.getMinutes().toString()
 	@version = d.getFullYear().toString() + (d.getMonth()+1).toString() + d.getDate().toString()
 	return
 
 CssUrlVersioner::getQueryString = () ->
-	if @options.lastCommit
+
+	if @options.lastcommit
 		@version = @sha1
+
+	if @options.version isnt ''
+		@version = @options.version	
 
 	@queryString = '?' + @options.variable + '=' + @version
 	return
