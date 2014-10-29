@@ -8,7 +8,7 @@ Javascript function for exec linux commands in nodejs
 /*
  * Module dependencies.
  */
-var Execute, execute, extend, fs;
+var Execute, execute, extend, fs, rimraf;
 
 extend = require('util')._extend;
 
@@ -16,12 +16,15 @@ execute = require("child_process").exec;
 
 fs = require('fs');
 
+rimraf = require('rimraf');
+
 
 /*
  * Library.
  */
 
 Execute = function(settings) {
+  this.reset();
   return this;
 };
 
@@ -31,14 +34,22 @@ Execute.prototype.runCommand = function(command) {
   newCommand = command + " 2>&1 1>output && echo done > done";
   exec = execute(newCommand);
   while (!fs.existsSync('./done')) {
-    console.log('. . no existe! done . .');
+    this.attempts++;
   }
-  console.log('. . ya existe! . .');
   this.output = fs.readFileSync('./output', {
     encoding: 'utf8'
   }).toString().replace(/\n/gi, '');
-  console.log('_' + this.output + '_');
+  if (this.output === '') {
+    that.runCommand(command);
+  }
+  this.reset();
   return this.output;
+};
+
+Execute.prototype.reset = function() {
+  rimraf('./done', function() {});
+  rimraf('./output', function() {});
+  this.attempts = 0;
 };
 
 

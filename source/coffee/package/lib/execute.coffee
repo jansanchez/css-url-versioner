@@ -11,12 +11,14 @@ Javascript function for exec linux commands in nodejs
 extend  = require('util')._extend
 execute = require("child_process").exec
 fs      = require('fs')
+rimraf  = require('rimraf')
 
 ###
 # Library.
 ###
 
 Execute = (settings) ->
+	@reset()
 	@
 
 Execute::runCommand = (command) ->
@@ -26,18 +28,27 @@ Execute::runCommand = (command) ->
 	exec = execute(newCommand)
 
 	while (!fs.existsSync('./done'))
-		console.log('. . no existe! done . .')
-
-	console.log('. . ya existe! . .')
+		@attempts++
 
 	@output = fs.readFileSync('./output', {encoding: 'utf8'}).toString().replace(/\n/gi, '')
 
-#	if @output is '' or (typeof @output is undefined) or @output is 'done'
-#		that.runCommand(newCommand)	
+	if @output is ''
+		that.runCommand(command)
 
-	console.log '_'+@output+'_'
+	#console.log @attempts
 
+	@reset()
 	return @output
+
+Execute::reset = () ->
+	rimraf('./done', ()->
+		return
+	)
+	rimraf('./output', ()->
+		return
+	)
+	@attempts = 0
+	return
 
 ###
 # Expose library.
