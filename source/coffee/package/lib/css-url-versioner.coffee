@@ -19,22 +19,26 @@ Execute = require('./execute')
 
 CssUrlVersioner = (settings) ->
 	@default = {
-		variable: 'v',
+		content: ''
+		variable: 'v'
 		version: ''
 		lastcommit: false
 	}
 	@sha1 = null
 	@version = null
 	@queryString = null
+	@output = null
 	@options = extend(this.default, settings)
 
 	@setDefaultVersion()
 	if @options.lastcommit
 		@getLastCommit()
-	
+
 	@getQueryString()
-	
-	console.log @queryString
+
+	@insertVersion()
+
+	#console.log @queryString
 	@
 
 
@@ -61,7 +65,11 @@ CssUrlVersioner::getQueryString = () ->
 	@queryString = '?' + @options.variable + '=' + @version
 	return
 
-
+CssUrlVersioner::insertVersion = () ->
+	#console.log @options.content
+	#(url)([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})
+	#@output
+	return
 
 ###
 # Expose library.

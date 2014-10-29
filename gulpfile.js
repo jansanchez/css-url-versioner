@@ -189,8 +189,7 @@ var cssVersioner = require('./dist/package/index');
 gulp.task('versioner', function (cb) {
     fs.readFile('test/css/test.css', 'utf8', function (err, data) {
         cssVersioner({
-            content: data,
-            variable: 'v'
+            content: data
         })
     });
 });

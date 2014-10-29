@@ -21,6 +21,7 @@ Execute = require('./execute');
 
 CssUrlVersioner = function(settings) {
   this["default"] = {
+    content: '',
     variable: 'v',
     version: '',
     lastcommit: false
@@ -28,13 +29,14 @@ CssUrlVersioner = function(settings) {
   this.sha1 = null;
   this.version = null;
   this.queryString = null;
+  this.output = null;
   this.options = extend(this["default"], settings);
   this.setDefaultVersion();
   if (this.options.lastcommit) {
     this.getLastCommit();
   }
   this.getQueryString();
-  console.log(this.queryString);
+  this.insertVersion();
   return this;
 };
 
@@ -60,6 +62,8 @@ CssUrlVersioner.prototype.getQueryString = function() {
   }
   this.queryString = '?' + this.options.variable + '=' + this.version;
 };
+
+CssUrlVersioner.prototype.insertVersion = function() {};
 
 
 /*
