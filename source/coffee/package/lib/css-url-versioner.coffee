@@ -9,9 +9,9 @@ cssUrlVersioner
 ###
 
 extend  = require('util')._extend
-execute = require("child_process").exec
-fs      = require('fs')
-
+Execute = require('./execute.js')
+#execute = require("child_process").exec
+#fs      = require('fs')
 
 
 ###
@@ -35,25 +35,16 @@ CssUrlVersioner = (settings) ->
 		@getLastCommit()
 	@getQueryString()
 
-	console.log @queryString
+	#console.log @queryString
 	@
 
 
 CssUrlVersioner::getLastCommit = () ->
-	that = @
 	command = "git log -1 --format=%h"
 
-	execute(command + " 2>&1 1>output && echo done > done")
-
-	while (!fs.existsSync('done'))
-		that.getLastCommit()
-		return
-
-	@sha1 = fs.readFileSync('./output', {encoding: 'utf8'}).toString().replace(/\n/gi, '')
-
-	if @sha1 is ''
-		that.getLastCommit()
-
+	exec = new Execute()
+	@sha1 = exec.runCommand(command)
+	console.log('sha1: ' + @sha1)
 	return
 
 CssUrlVersioner::setDefaultVersion = () ->
@@ -68,6 +59,7 @@ CssUrlVersioner::getQueryString = () ->
 
 	@queryString = '?' + @options.variable + '=' + @version
 	return
+
 
 
 ###

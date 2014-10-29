@@ -192,7 +192,7 @@ gulp.task('versioner', function (cb) {
             content: data,
             variable: 'v',
             version: '123456',
-            lastCommit: false,
+            lastCommit: true,
             date: true,
             formatDate: 'd-M-Y'
         })

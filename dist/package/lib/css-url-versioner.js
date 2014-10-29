@@ -8,13 +8,11 @@ cssUrlVersioner
 /*
  * Module dependencies.
  */
-var CssUrlVersioner, execute, extend, fs;
+var CssUrlVersioner, Execute, extend;
 
 extend = require('util')._extend;
 
-execute = require("child_process").exec;
-
-fs = require('fs');
+Execute = require('./execute.js');
 
 
 /*
@@ -37,25 +35,15 @@ CssUrlVersioner = function(settings) {
     this.getLastCommit();
   }
   this.getQueryString();
-  console.log(this.queryString);
   return this;
 };
 
 CssUrlVersioner.prototype.getLastCommit = function() {
-  var command, that;
-  that = this;
+  var command, exec;
   command = "git log -1 --format=%h";
-  execute(command + " 2>&1 1>output && echo done > done");
-  while (!fs.existsSync('done')) {
-    that.getLastCommit();
-    return;
-  }
-  this.sha1 = fs.readFileSync('./output', {
-    encoding: 'utf8'
-  }).toString().replace(/\n/gi, '');
-  if (this.sha1 === '') {
-    that.getLastCommit();
-  }
+  exec = new Execute();
+  this.sha1 = exec.runCommand(command);
+  console.log('sha1: ' + this.sha1);
 };
 
 CssUrlVersioner.prototype.setDefaultVersion = function() {
