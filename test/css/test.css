@@ -1,0 +1,28 @@
+/*!
+* Test Styles
+* @author Jan Sanchez
+*/
+
+.some_selector{
+	background-image: url(../img/sprite.png);
+}
+
+.other{
+	background-image: url("../img/sprite.png");
+}
+
+.another_selector{
+	background-image: url('../img/sprite.png');
+}
+
+@font-face{
+	font-family: 'gotham';
+	src: url(../fonts/new.eot#ie);
+	src: url(../fonts/new.woff) format('woff'),
+		 url('../fonts/new.otf') format('otf'),
+		 url("../fonts/new.svg") format('svg'),
+	 	 url('../fonts/new.ttf#fix') format('truetype'),
+		 url("../fonts/new.svg#gotham") format('svg');
+	font-style:normal;
+	font-weight:400;
+}

@@ -2,7 +2,7 @@
   "name": "css-url-versioner",
   "version": "0.1.1",
   "description": "css-url-versioner",
-  "main": "dist/index.js",
+  "main": "dist/package/index",
   "scripts": {
     "test": "mocha"
   },

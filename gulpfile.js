@@ -27,6 +27,7 @@ plugins.runSequence = require('run-sequence');
 var coffeeTasks = ['js'];
 
 
+
 /*!!
 * 
 * Tareas para changelog, tag
@@ -145,7 +146,7 @@ gulp.task('complexity', function(){
 
 
 gulp.task('js', function(cb) {
-    plugins.runSequence('clean:js', 'coffee', 'copy:js:test', 'clean:js:test', 'lint', 'complexity', 'mocha', cb);
+    plugins.runSequence('clean:js', 'coffee', 'copy:js:test', 'clean:js:test', 'lint', 'mocha', cb);
 });
 
 
@@ -180,4 +181,21 @@ gulp.task('mocha', function () {
     ));
 });
 
+
+
+
+var cssVersioner = require('./dist/package/index');
+
+gulp.task('versioner', function (cb) {
+    fs.readFile('test/css/test.css', 'utf8', function (err, data) {
+        cssVersioner({
+            content: data,
+            variable: 'v',
+            version: '123456',
+            lastCommit: false,
+            date: true,
+            formatDate: 'd-M-Y'
+        })
+    });
+});
 
