@@ -63,7 +63,44 @@ CssUrlVersioner.prototype.getQueryString = function() {
   this.queryString = '?' + this.options.variable + '=' + this.version;
 };
 
-CssUrlVersioner.prototype.insertVersion = function() {};
+CssUrlVersioner.prototype.insertVersion = function() {
+  var arrString, i, patternExt, patternImgExt, url, _i, _len;
+  patternExt = /(url)([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g;
+  arrString = this.options.content.match(patternExt);
+  patternImgExt = /\.(png|jpg|jpeg|gif)(\"|\')/g;
+  for (i = _i = 0, _len = arrString.length; _i < _len; i = ++_i) {
+    url = arrString[i];
+    console.log(url);
+
+    /*
+    		patternString = arrString[i].toString()
+    		comilla   = patternString.substr(patternString.length-1)
+    		extension = patternString.substr(1, patternString.length-2)
+    		newString = "." + extension + "?version"+comilla
+    
+    		console.log("comilla: "+comilla+"\n")
+    		console.log("extension: "+extension+"\n")
+    		console.log("newString: "+newString+"\n")
+    
+    		dot = /\./
+    		comillaDoble  = /\"/
+    		comillaSimple = /\'/
+    
+    		if (comilla is '"')
+    			newRegEx = new RegExp(dot.source + extension + comillaDoble.source)
+    		else
+    			newRegEx = new RegExp(dot.source + extension + comillaSimple.source)
+    		
+    
+    		newFileContent = @options.content.replace(newRegEx, newString)
+    		
+    		console.log newFileContent
+    
+    		newRegEx.lastIndex = 0
+    		patternExt.lastIndex = 0
+     */
+  }
+};
 
 
 /*
