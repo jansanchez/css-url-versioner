@@ -35,12 +35,11 @@ CssUrlVersioner = (settings) ->
 		@getLastCommit()
 
 	@getQueryString()
-
 	@insertVersion()
 
-	#console.log @queryString
-	@
+	console.log @options.content
 
+	@
 
 CssUrlVersioner::getLastCommit = () ->
 	command = "git log -1 --format=%h"
@@ -66,49 +65,35 @@ CssUrlVersioner::getQueryString = () ->
 	return
 
 CssUrlVersioner::insertVersion = () ->
-	#console.log @options.content
-	#(url)([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})
-	#@output
 
-	#console.log @options.content
-	patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g;
+	patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g
 	arrString = @options.content.match(patternUrl)
-	
-	#console.log arrString
-
-	patternExt = /(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?/g
 
 	patternComillas = /(\"|\')/g
+	patternExt = /(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?/g
 	patternSimbols = /([\#]{1})/g
 
-
-
-	dot = /\./
 	comillaDoble  = /\"/
 	comillaSimple = /\'/
+	dot = /\./
 
-
-	for url, i in arrString
+	for url in arrString
 		comilla = ""
 		almohadilla = ""
 
-		console.log url
-		patternString = url.toString()	
+		patternString = url.toString()
 
 		c1 = url.match(patternComillas)
 
 		unless c1 is null
 			c2 = c1.slice(c1.length-1)
-			console.log c2
 			comilla = c2[0]
 
 		c3 = url.match(patternSimbols)
 
 		unless c3 is null
 			c4 = c3.slice(c3.length-1)
-			#console.log c4
 			almohadilla = c4[0]
-
 
 		newArr = url.match(patternExt)
 		newArr2 = newArr.slice(newArr.length-1)
@@ -119,7 +104,6 @@ CssUrlVersioner::insertVersion = () ->
 			newString = '.' + extension + @queryString + comilla
 		else
 			newString = '.' + extension + @queryString + almohadilla
-
 
 		if comilla is ''
 			if almohadilla is ""
@@ -139,19 +123,10 @@ CssUrlVersioner::insertVersion = () ->
 					else
 						newRegEx = new RegExp(dot.source + extension + patternSimbols.source)
 
-		
-		#console.log("comilla: " + comilla)
-		#console.log("extension: " + extension)
-		#console.log("newString: " + newString)
-		#console.log newRegEx
-		
-		console.log('_ _ _ _ _ _ _ _ _')
-
-
 		newFileContent = @options.content.replace(newRegEx, newString)
 		@options.content = newFileContent
 
-		console.log @options.content
+		# restart lastIndexs
 
 		newRegEx.lastIndex = 0
 		patternExt.lastIndex = 0
@@ -161,20 +136,8 @@ CssUrlVersioner::insertVersion = () ->
 		comillaDoble.lastIndex = 0
 		comillaSimple.lastIndex = 0
 
-		###
-
-
-
-		newFileContent = @options.content.replace(newRegEx, newString)
-		
-		console.log newFileContent
-
-		newRegEx.lastIndex = 0
-		patternExt.lastIndex = 0
-		###
-
-
 	return
+
 
 ###
 # Expose library.

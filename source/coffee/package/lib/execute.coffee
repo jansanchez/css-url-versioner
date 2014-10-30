@@ -22,23 +22,22 @@ Execute = (settings) ->
 	@
 
 Execute::runCommand = (command) ->
-	that = @
-
 	newCommand = command + " 2>&1 1>output && echo done > done"
 	exec = execute(newCommand)
+	@readFile(command)
+	if @output is ''
+		@runCommand(command)
+	@reset()
+	return @output
 
+Execute::readFile = () ->
 	while (!fs.existsSync('./done'))
 		@attempts++
 
 	@output = fs.readFileSync('./output', {encoding: 'utf8'}).toString().replace(/\n/gi, '')
-
-	if @output is ''
-		that.runCommand(command)
-
+	return
 	#console.log @attempts
 
-	@reset()
-	return @output
 
 Execute::reset = () ->
 	rimraf('./done', ()->

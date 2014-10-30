@@ -37,6 +37,7 @@ CssUrlVersioner = function(settings) {
   }
   this.getQueryString();
   this.insertVersion();
+  console.log(this.options.content);
   return this;
 };
 
@@ -64,25 +65,23 @@ CssUrlVersioner.prototype.getQueryString = function() {
 };
 
 CssUrlVersioner.prototype.insertVersion = function() {
-  var almohadilla, arrString, c1, c2, c3, c4, comilla, comillaDoble, comillaSimple, dot, extension, i, newArr, newArr2, newFileContent, newRegEx, newString, patternComillas, patternExt, patternSimbols, patternString, patternUrl, url, _i, _len;
+  var almohadilla, arrString, c1, c2, c3, c4, comilla, comillaDoble, comillaSimple, dot, extension, newArr, newArr2, newFileContent, newRegEx, newString, patternComillas, patternExt, patternSimbols, patternString, patternUrl, url, _i, _len;
   patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g;
   arrString = this.options.content.match(patternUrl);
-  patternExt = /(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?/g;
   patternComillas = /(\"|\')/g;
+  patternExt = /(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?/g;
   patternSimbols = /([\#]{1})/g;
-  dot = /\./;
   comillaDoble = /\"/;
   comillaSimple = /\'/;
-  for (i = _i = 0, _len = arrString.length; _i < _len; i = ++_i) {
-    url = arrString[i];
+  dot = /\./;
+  for (_i = 0, _len = arrString.length; _i < _len; _i++) {
+    url = arrString[_i];
     comilla = "";
     almohadilla = "";
-    console.log(url);
     patternString = url.toString();
     c1 = url.match(patternComillas);
     if (c1 !== null) {
       c2 = c1.slice(c1.length - 1);
-      console.log(c2);
       comilla = c2[0];
     }
     c3 = url.match(patternSimbols);
@@ -121,10 +120,8 @@ CssUrlVersioner.prototype.insertVersion = function() {
           }
       }
     }
-    console.log('_ _ _ _ _ _ _ _ _');
     newFileContent = this.options.content.replace(newRegEx, newString);
     this.options.content = newFileContent;
-    console.log(this.options.content);
     newRegEx.lastIndex = 0;
     patternExt.lastIndex = 0;
     patternComillas.lastIndex = 0;
@@ -132,18 +129,6 @@ CssUrlVersioner.prototype.insertVersion = function() {
     dot.lastIndex = 0;
     comillaDoble.lastIndex = 0;
     comillaSimple.lastIndex = 0;
-
-    /*
-    
-    
-    
-    		newFileContent = @options.content.replace(newRegEx, newString)
-    		
-    		console.log newFileContent
-    
-    		newRegEx.lastIndex = 0
-    		patternExt.lastIndex = 0
-     */
   }
 };
 

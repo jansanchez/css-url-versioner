@@ -15,4 +15,3 @@ describe('cssUrl', () ->
 		'igual'.should.be.equal('igual')
 	)
 )
-
