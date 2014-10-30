@@ -64,33 +64,78 @@ CssUrlVersioner.prototype.getQueryString = function() {
 };
 
 CssUrlVersioner.prototype.insertVersion = function() {
-  var arrString, i, patternExt, patternImgExt, url, _i, _len;
-  patternExt = /(url)([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g;
-  arrString = this.options.content.match(patternExt);
-  patternImgExt = /\.(png|jpg|jpeg|gif)(\"|\')/g;
+  var almohadilla, arrString, c1, c2, c3, c4, comilla, comillaDoble, comillaSimple, dot, extension, i, newArr, newArr2, newFileContent, newRegEx, newString, patternComillas, patternExt, patternSimbols, patternString, patternUrl, url, _i, _len;
+  patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g;
+  arrString = this.options.content.match(patternUrl);
+  patternExt = /(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?/g;
+  patternComillas = /(\"|\')/g;
+  patternSimbols = /([\#]{1})/g;
+  dot = /\./;
+  comillaDoble = /\"/;
+  comillaSimple = /\'/;
   for (i = _i = 0, _len = arrString.length; _i < _len; i = ++_i) {
     url = arrString[i];
+    comilla = "";
+    almohadilla = "";
     console.log(url);
+    patternString = url.toString();
+    c1 = url.match(patternComillas);
+    if (c1 !== null) {
+      c2 = c1.slice(c1.length - 1);
+      console.log(c2);
+      comilla = c2[0];
+    }
+    c3 = url.match(patternSimbols);
+    if (c3 !== null) {
+      c4 = c3.slice(c3.length - 1);
+      almohadilla = c4[0];
+    }
+    newArr = url.match(patternExt);
+    newArr2 = newArr.slice(newArr.length - 1);
+    extension = newArr2[0].substr(1).replace(patternComillas, '');
+    if (almohadilla === "") {
+      newString = '.' + extension + this.queryString + comilla;
+    } else {
+      newString = '.' + extension + this.queryString + almohadilla;
+    }
+    if (comilla === '') {
+      if (almohadilla === "") {
+        newRegEx = new RegExp(dot.source + extension);
+      } else {
+        newRegEx = new RegExp(dot.source + extension + patternSimbols.source);
+      }
+    } else {
+      switch (comilla) {
+        case '"':
+          if (almohadilla === "") {
+            newRegEx = new RegExp(dot.source + extension + comillaDoble.source);
+          } else {
+            newRegEx = new RegExp(dot.source + extension + patternSimbols.source);
+          }
+          break;
+        case "'":
+          if (almohadilla === "") {
+            newRegEx = new RegExp(dot.source + extension + comillaSimple.source);
+          } else {
+            newRegEx = new RegExp(dot.source + extension + patternSimbols.source);
+          }
+      }
+    }
+    console.log('_ _ _ _ _ _ _ _ _');
+    newFileContent = this.options.content.replace(newRegEx, newString);
+    this.options.content = newFileContent;
+    console.log(this.options.content);
+    newRegEx.lastIndex = 0;
+    patternExt.lastIndex = 0;
+    patternComillas.lastIndex = 0;
+    patternSimbols.lastIndex = 0;
+    dot.lastIndex = 0;
+    comillaDoble.lastIndex = 0;
+    comillaSimple.lastIndex = 0;
 
     /*
-    		patternString = arrString[i].toString()
-    		comilla   = patternString.substr(patternString.length-1)
-    		extension = patternString.substr(1, patternString.length-2)
-    		newString = "." + extension + "?version"+comilla
     
-    		console.log("comilla: "+comilla+"\n")
-    		console.log("extension: "+extension+"\n")
-    		console.log("newString: "+newString+"\n")
     
-    		dot = /\./
-    		comillaDoble  = /\"/
-    		comillaSimple = /\'/
-    
-    		if (comilla is '"')
-    			newRegEx = new RegExp(dot.source + extension + comillaDoble.source)
-    		else
-    			newRegEx = new RegExp(dot.source + extension + comillaSimple.source)
-    		
     
     		newFileContent = @options.content.replace(newRegEx, newString)
     		

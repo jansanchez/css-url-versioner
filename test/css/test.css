@@ -5,34 +5,14 @@
 
 .some_selector{
 	background-image: url(sprite.png);
-}
-
-.other{
 	background-image: url("../img/sprite.png");
-}
-
-.another_selector{
 	background-image: url('../img/sprite.png');
 }
-
 @font-face{
 	font-family: 'gotham';
 	src: url(../fonts/new.eot#ie);
 	src: url(../fonts/new.woff) format('woff'),
-		 url('../fo.nts/new.otf') format('otf'),
 		 url("../fonts/new.ere.svg") format('svg'),
 	 	 url('../fonts/new.ttf#fix') format('truetype'),
 		 url("../fonts/new.svg#gotham") format('svg');
-	font-style:normal;
-	font-weight:400;
 }
-
-/*
-
-(url)([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})
-
-
-(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?(^(?!\)))?
-
-
-*/
