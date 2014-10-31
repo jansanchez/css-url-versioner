@@ -10,8 +10,6 @@ cssUrlVersioner
 
 extend  = require('util')._extend
 Execute = require('./execute')
-#fs      = require('fs')
-
 
 ###
 # Library.
@@ -44,7 +42,7 @@ CssUrlVersioner::getLastCommit = () ->
 
 	exec = new Execute()
 	@sha1 = exec.runCommand(command)
-
+	
 	if @sha1 is 'error'
 		@sha1 = @version
 
@@ -124,7 +122,6 @@ CssUrlVersioner::insertVersion = () ->
 						newRegEx = new RegExp(dot.source + extension + patternSimbols.source)
 
 		@options.content = @options.content.replace(newRegEx, newString)
-		@output = @options.content
 		
 		# restart lastIndexs
 
@@ -136,8 +133,9 @@ CssUrlVersioner::insertVersion = () ->
 		doubleQuotes.lastIndex = 0
 		singleQuote.lastIndex = 0
 
-	return
+	@output = @options.content
 
+	return
 
 ###
 # Expose library.

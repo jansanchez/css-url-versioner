@@ -121,7 +121,6 @@ CssUrlVersioner.prototype.insertVersion = function() {
       }
     }
     this.options.content = this.options.content.replace(newRegEx, newString);
-    this.output = this.options.content;
     newRegEx.lastIndex = 0;
     patternExt.lastIndex = 0;
     patternQuotes.lastIndex = 0;
@@ -130,6 +129,7 @@ CssUrlVersioner.prototype.insertVersion = function() {
     doubleQuotes.lastIndex = 0;
     singleQuote.lastIndex = 0;
   }
+  this.output = this.options.content;
 };
 
 
