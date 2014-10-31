@@ -21,23 +21,21 @@ Execute = require('./execute');
 
 CssUrlVersioner = function(settings) {
   this["default"] = {
-    content: '',
     variable: 'v',
     version: '',
     lastcommit: false
   };
+  this.options = extend(this["default"], settings);
   this.sha1 = null;
   this.version = null;
   this.queryString = null;
-  this.output = null;
-  this.options = extend(this["default"], settings);
+  this.output = '';
   this.setDefaultVersion();
   if (this.options.lastcommit) {
     this.getLastCommit();
   }
   this.getQueryString();
   this.insertVersion();
-  console.log(this.options.content);
   return this;
 };
 
@@ -65,70 +63,69 @@ CssUrlVersioner.prototype.getQueryString = function() {
 };
 
 CssUrlVersioner.prototype.insertVersion = function() {
-  var almohadilla, arrString, c1, c2, c3, c4, comilla, comillaDoble, comillaSimple, dot, extension, newArr, newArr2, newFileContent, newRegEx, newString, patternComillas, patternExt, patternSimbols, patternString, patternUrl, url, _i, _len;
+  var ArrayOfExtensions, ArrayOfNumerals, ArrayOfQuotes, Quoutes, arrayUrl, dot, doubleQuotes, extension, extensions, newRegEx, newString, numeral, numerals, patternExt, patternQuotes, patternSimbols, patternUrl, quote, singleQuote, url, _i, _len;
   patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g;
-  arrString = this.options.content.match(patternUrl);
-  patternComillas = /(\"|\')/g;
+  patternQuotes = /(\"|\')/g;
   patternExt = /(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?/g;
   patternSimbols = /([\#]{1})/g;
-  comillaDoble = /\"/;
-  comillaSimple = /\'/;
+  doubleQuotes = /\"/;
+  singleQuote = /\'/;
   dot = /\./;
-  for (_i = 0, _len = arrString.length; _i < _len; _i++) {
-    url = arrString[_i];
-    comilla = "";
-    almohadilla = "";
-    patternString = url.toString();
-    c1 = url.match(patternComillas);
-    if (c1 !== null) {
-      c2 = c1.slice(c1.length - 1);
-      comilla = c2[0];
+  arrayUrl = this.options.content.match(patternUrl);
+  for (_i = 0, _len = arrayUrl.length; _i < _len; _i++) {
+    url = arrayUrl[_i];
+    quote = "";
+    numeral = "";
+    ArrayOfQuotes = url.match(patternQuotes);
+    if (ArrayOfQuotes !== null) {
+      Quoutes = ArrayOfQuotes.slice(ArrayOfQuotes.length - 1);
+      quote = Quoutes[0];
     }
-    c3 = url.match(patternSimbols);
-    if (c3 !== null) {
-      c4 = c3.slice(c3.length - 1);
-      almohadilla = c4[0];
+    ArrayOfNumerals = url.match(patternSimbols);
+    if (ArrayOfNumerals !== null) {
+      numerals = ArrayOfNumerals.slice(ArrayOfNumerals.length - 1);
+      numeral = numerals[0];
     }
-    newArr = url.match(patternExt);
-    newArr2 = newArr.slice(newArr.length - 1);
-    extension = newArr2[0].substr(1).replace(patternComillas, '');
-    if (almohadilla === "") {
-      newString = '.' + extension + this.queryString + comilla;
+    ArrayOfExtensions = url.match(patternExt);
+    extensions = ArrayOfExtensions.slice(ArrayOfExtensions.length - 1);
+    extension = extensions[0].substr(1).replace(patternQuotes, '');
+    if (numeral === "") {
+      newString = '.' + extension + this.queryString + quote;
     } else {
-      newString = '.' + extension + this.queryString + almohadilla;
+      newString = '.' + extension + this.queryString + numeral;
     }
-    if (comilla === '') {
-      if (almohadilla === "") {
+    if (quote === '') {
+      if (numeral === "") {
         newRegEx = new RegExp(dot.source + extension);
       } else {
         newRegEx = new RegExp(dot.source + extension + patternSimbols.source);
       }
     } else {
-      switch (comilla) {
+      switch (quote) {
         case '"':
-          if (almohadilla === "") {
-            newRegEx = new RegExp(dot.source + extension + comillaDoble.source);
+          if (numeral === "") {
+            newRegEx = new RegExp(dot.source + extension + doubleQuotes.source);
           } else {
             newRegEx = new RegExp(dot.source + extension + patternSimbols.source);
           }
           break;
         case "'":
-          if (almohadilla === "") {
-            newRegEx = new RegExp(dot.source + extension + comillaSimple.source);
+          if (numeral === "") {
+            newRegEx = new RegExp(dot.source + extension + singleQuote.source);
           } else {
             newRegEx = new RegExp(dot.source + extension + patternSimbols.source);
           }
       }
     }
-    newFileContent = this.options.content.replace(newRegEx, newString);
-    this.options.content = newFileContent;
+    this.options.content = this.options.content.replace(newRegEx, newString);
+    this.output = this.options.content;
     newRegEx.lastIndex = 0;
     patternExt.lastIndex = 0;
-    patternComillas.lastIndex = 0;
+    patternQuotes.lastIndex = 0;
     patternSimbols.lastIndex = 0;
     dot.lastIndex = 0;
-    comillaDoble.lastIndex = 0;
-    comillaSimple.lastIndex = 0;
+    doubleQuotes.lastIndex = 0;
+    singleQuote.lastIndex = 0;
   }
 };
 

@@ -19,16 +19,16 @@ Execute = require('./execute')
 
 CssUrlVersioner = (settings) ->
 	@default = {
-		content: ''
 		variable: 'v'
 		version: ''
 		lastcommit: false
 	}
+	@options = extend(this.default, settings)
+
 	@sha1 = null
 	@version = null
 	@queryString = null
-	@output = null
-	@options = extend(this.default, settings)
+	@output = ''
 
 	@setDefaultVersion()
 	if @options.lastcommit
@@ -36,8 +36,6 @@ CssUrlVersioner = (settings) ->
 
 	@getQueryString()
 	@insertVersion()
-
-	console.log @options.content
 
 	@
 
@@ -59,7 +57,7 @@ CssUrlVersioner::getQueryString = () ->
 		@version = @sha1
 
 	if @options.version isnt ''
-		@version = @options.version	
+		@version = @options.version
 
 	@queryString = '?' + @options.variable + '=' + @version
 	return
@@ -67,74 +65,72 @@ CssUrlVersioner::getQueryString = () ->
 CssUrlVersioner::insertVersion = () ->
 
 	patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g
-	arrString = @options.content.match(patternUrl)
-
-	patternComillas = /(\"|\')/g
+	patternQuotes = /(\"|\')/g
 	patternExt = /(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?/g
 	patternSimbols = /([\#]{1})/g
 
-	comillaDoble  = /\"/
-	comillaSimple = /\'/
+	doubleQuotes  = /\"/
+	singleQuote = /\'/
 	dot = /\./
 
-	for url in arrString
-		comilla = ""
-		almohadilla = ""
+	arrayUrl = @options.content.match(patternUrl)
 
-		patternString = url.toString()
+	for url in arrayUrl
+		quote = ""
+		numeral = ""
 
-		c1 = url.match(patternComillas)
+		ArrayOfQuotes = url.match(patternQuotes)
 
-		unless c1 is null
-			c2 = c1.slice(c1.length-1)
-			comilla = c2[0]
+		unless ArrayOfQuotes is null
+			Quoutes = ArrayOfQuotes.slice(ArrayOfQuotes.length-1)
+			quote = Quoutes[0]
 
-		c3 = url.match(patternSimbols)
+		ArrayOfNumerals = url.match(patternSimbols)
 
-		unless c3 is null
-			c4 = c3.slice(c3.length-1)
-			almohadilla = c4[0]
+		unless ArrayOfNumerals is null
+			numerals = ArrayOfNumerals.slice(ArrayOfNumerals.length-1)
+			numeral = numerals[0]
 
-		newArr = url.match(patternExt)
-		newArr2 = newArr.slice(newArr.length-1)
+		ArrayOfExtensions = url.match(patternExt)
+		extensions = ArrayOfExtensions.slice(ArrayOfExtensions.length-1)
 
-		extension = newArr2[0].substr(1).replace(patternComillas, '')
+		extension = extensions[0].substr(1).replace(patternQuotes, '')
 
-		if almohadilla is ""
-			newString = '.' + extension + @queryString + comilla
+		if numeral is ""
+			newString = '.' + extension + @queryString + quote
 		else
-			newString = '.' + extension + @queryString + almohadilla
+			newString = '.' + extension + @queryString + numeral
 
-		if comilla is ''
-			if almohadilla is ""
+		if quote is ''
+			if numeral is ""
 				newRegEx = new RegExp(dot.source + extension)
 			else
 				newRegEx = new RegExp(dot.source + extension + patternSimbols.source)			
 		else
-			switch comilla
+			switch quote
 				when '"'
-					if almohadilla is ""
-						newRegEx = new RegExp(dot.source + extension + comillaDoble.source)
+					if numeral is ""
+						newRegEx = new RegExp(dot.source + extension + doubleQuotes.source)
 					else
 						newRegEx = new RegExp(dot.source + extension + patternSimbols.source)
 				when "'"
-					if almohadilla is ""
-						newRegEx = new RegExp(dot.source + extension + comillaSimple.source)
+					if numeral is ""
+						newRegEx = new RegExp(dot.source + extension + singleQuote.source)
 					else
 						newRegEx = new RegExp(dot.source + extension + patternSimbols.source)
 
-		newFileContent = @options.content.replace(newRegEx, newString)
-		@options.content = newFileContent
-
+		@options.content = @options.content.replace(newRegEx, newString)
+		@output = @options.content
+		
 		# restart lastIndexs
 
 		newRegEx.lastIndex = 0
 		patternExt.lastIndex = 0
-		patternComillas.lastIndex = 0
+		patternQuotes.lastIndex = 0
 		patternSimbols.lastIndex = 0
 		dot.lastIndex = 0
-		comillaDoble.lastIndex = 0
-		comillaSimple.lastIndex = 0
+		doubleQuotes.lastIndex = 0
+		singleQuote.lastIndex = 0
 
 	return
 
