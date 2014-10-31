@@ -29,10 +29,14 @@ Execute = function(settings) {
 };
 
 Execute.prototype.runCommand = function(command) {
-  var exec, newCommand;
+  var newCommand;
   newCommand = command + " 2>&1 1>output && echo done > done";
-  exec = execute(newCommand);
-  this.readFile(command);
+  execute(newCommand, function(error, stdout, stderr) {
+    if (error) {
+      return console.log(stdout);
+    }
+  });
+  this.readFile();
   if (this.output === '') {
     this.runCommand(command);
   }
@@ -41,12 +45,22 @@ Execute.prototype.runCommand = function(command) {
 };
 
 Execute.prototype.readFile = function() {
+  var flag;
+  flag = true;
   while (!fs.existsSync('./done')) {
     this.attempts++;
+    if (this.attempts > 10000) {
+      flag = false;
+      break;
+    }
   }
-  this.output = fs.readFileSync('./output', {
-    encoding: 'utf8'
-  }).toString().replace(/\n/gi, '');
+  if (flag) {
+    this.output = fs.readFileSync('./output', {
+      encoding: 'utf8'
+    }).toString().replace(/\n/gi, '');
+  } else {
+    this.output = 'error';
+  }
 };
 
 Execute.prototype.reset = function() {

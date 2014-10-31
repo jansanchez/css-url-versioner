@@ -23,21 +23,33 @@ Execute = (settings) ->
 
 Execute::runCommand = (command) ->
 	newCommand = command + " 2>&1 1>output && echo done > done"
-	exec = execute(newCommand)
-	@readFile(command)
+
+	execute(newCommand, (error, stdout, stderr) ->
+		if (error)
+			console.log(stdout)
+	)
+	@readFile()
+
 	if @output is ''
 		@runCommand(command)
 	@reset()
 	return @output
 
 Execute::readFile = () ->
+	flag = true
+
 	while (!fs.existsSync('./done'))
 		@attempts++
+		if @attempts > 10000
+			flag = false
+			break
 
-	@output = fs.readFileSync('./output', {encoding: 'utf8'}).toString().replace(/\n/gi, '')
+	if flag
+		@output = fs.readFileSync('./output', {encoding: 'utf8'}).toString().replace(/\n/gi, '')
+	else
+		@output = 'error'
+
 	return
-	#console.log @attempts
-
 
 Execute::reset = () ->
 	rimraf('./done', ()->

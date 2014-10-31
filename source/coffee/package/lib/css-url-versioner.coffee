@@ -44,6 +44,10 @@ CssUrlVersioner::getLastCommit = () ->
 
 	exec = new Execute()
 	@sha1 = exec.runCommand(command)
+
+	if @sha1 is 'error'
+		@sha1 = @version
+
 	return
 
 CssUrlVersioner::setDefaultVersion = () ->

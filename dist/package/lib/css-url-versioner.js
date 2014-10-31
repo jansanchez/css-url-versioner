@@ -44,6 +44,9 @@ CssUrlVersioner.prototype.getLastCommit = function() {
   command = "git log -1 --format=%h";
   exec = new Execute();
   this.sha1 = exec.runCommand(command);
+  if (this.sha1 === 'error') {
+    this.sha1 = this.version;
+  }
 };
 
 CssUrlVersioner.prototype.setDefaultVersion = function() {
