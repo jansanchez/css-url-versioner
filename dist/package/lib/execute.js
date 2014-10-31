@@ -33,20 +33,25 @@ Execute.prototype.runCommand = function(command) {
   newCommand = command + " 2>&1 1>output && echo done > done";
   execute(newCommand, function(error, stdout, stderr) {
     if (error) {
-      return console.log(stdout);
+      console.log(stdout);
     }
   });
+  this.validateOutput(command);
+  return this.output;
+};
+
+Execute.prototype.validateOutput = function(command) {
   this.readFile();
   if (this.output === '') {
     this.runCommand(command);
   }
   this.reset();
-  return this.output;
 };
 
 Execute.prototype.readFile = function() {
   var flag;
   flag = true;
+  this.output = 'error';
   while (!fs.existsSync('./done')) {
     this.attempts++;
     if (this.attempts > 10000) {
@@ -54,12 +59,14 @@ Execute.prototype.readFile = function() {
       break;
     }
   }
+  this.validateFlag(flag);
+};
+
+Execute.prototype.validateFlag = function(flag) {
   if (flag) {
     this.output = fs.readFileSync('./output', {
       encoding: 'utf8'
     }).toString().replace(/\n/gi, '');
-  } else {
-    this.output = 'error';
   }
 };
 

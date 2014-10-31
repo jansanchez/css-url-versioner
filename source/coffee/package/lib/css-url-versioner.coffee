@@ -16,26 +16,36 @@ Execute = require('./execute')
 ###
 
 CssUrlVersioner = (settings) ->
+	@sha1 = null
+	@version = null
+	@queryString = null
+	@output = ''
+
+	@extend(settings)
+	@generateVersion()
+	@getQueryString()
+	@insertVersion()
+
+	@
+
+CssUrlVersioner::extend = (settings) ->
 	@default = {
 		variable: 'v'
 		version: ''
 		lastcommit: false
 	}
 	@options = extend(this.default, settings)
+	return
 
-	@sha1 = null
-	@version = null
-	@queryString = null
-	@output = ''
-
-	@setDefaultVersion()
+CssUrlVersioner::generateVersion = () ->
+	if @options.version is ''
+		@setDefaultVersion()
+	else
+		@version = @options.version
+		@sha1 = @version
 	if @options.lastcommit
 		@getLastCommit()
-
-	@getQueryString()
-	@insertVersion()
-
-	@
+	return
 
 CssUrlVersioner::getLastCommit = () ->
 	command = "git log -1 --format=%h"
@@ -74,7 +84,7 @@ CssUrlVersioner::insertVersion = () ->
 	doubleQuotes  = /\"/
 	singleQuote = /\'/
 	dot = /\./
-
+	
 	arrayUrl = @options.content.match(patternUrl)
 
 	for url in arrayUrl
@@ -98,10 +108,14 @@ CssUrlVersioner::insertVersion = () ->
 
 		extension = extensions[0].substr(1).replace(patternQuotes, '')
 
+
+
 		if numeral is ""
 			newString = '.' + extension + @queryString + quote
 		else
 			newString = '.' + extension + @queryString + numeral
+
+
 
 		if quote is ''
 			if numeral is ""

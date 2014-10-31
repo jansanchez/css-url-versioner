@@ -18,7 +18,7 @@ data = fs.readFileSync('./test/css/test.css', 'utf8');
 
 instance = cssVersioner({
   content: data,
-  lastcommit: true
+  variable: 'z'
 });
 
 describe('cssUrl', function() {
@@ -26,16 +26,30 @@ describe('cssUrl', function() {
   options = {};
   beforeEach(function() {});
   describe('Extend', function() {
-    it('instance.options.lastcommit should be equal to true.', function() {
-      instance.options.lastcommit.should.be.equal(true);
+    it('instance.options.variable should be equal to "z".', function() {
+      instance.options.variable.should.be.equal('z');
     });
   });
   describe('Default Version', function() {
-    it('instance.version should be equal to true.', function() {
-      instance = cssVersioner({
-        content: data
-      });
+    it('instance.version should be equal to ' + version + '.', function() {
       instance.version.should.be.equal(version);
+    });
+  });
+  describe('Custom Version', function() {
+    var otherInstance;
+    otherInstance = cssVersioner({
+      content: data,
+      version: 'myVersion'
+    });
+    it('otherInstance.version should be equal to "myVersion".', function() {
+      otherInstance.version.should.be.equal("myVersion");
+    });
+  });
+  describe('Query String', function() {
+    var queryString;
+    queryString = '?z=' + version;
+    it('instance.queryString should be equal to ' + queryString + '.', function() {
+      instance.queryString.should.be.equal(queryString);
     });
   });
 });

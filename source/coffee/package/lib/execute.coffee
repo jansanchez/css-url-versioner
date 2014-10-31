@@ -27,28 +27,36 @@ Execute::runCommand = (command) ->
 	execute(newCommand, (error, stdout, stderr) ->
 		if (error)
 			console.log(stdout)
+			return
 	)
-	@readFile()
+	@validateOutput(command)
+	return @output
 
+Execute::validateOutput = (command) ->
+	@readFile()
 	if @output is ''
 		@runCommand(command)
 	@reset()
-	return @output
+	return
 
 Execute::readFile = () ->
 	flag = true
+	@output = 'error'
 
 	while (!fs.existsSync('./done'))
 		@attempts++
 		if @attempts > 10000
 			flag = false
 			break
+	
+	@validateFlag(flag)
 
+	return
+
+
+Execute::validateFlag = (flag) ->
 	if flag
 		@output = fs.readFileSync('./output', {encoding: 'utf8'}).toString().replace(/\n/gi, '')
-	else
-		@output = 'error'
-
 	return
 
 Execute::reset = () ->
