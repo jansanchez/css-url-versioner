@@ -130,13 +130,11 @@ CssUrlVersioner::getQuotesSource = (quote, singleQuote, doubleQuotes) ->
 
 CssUrlVersioner::numeralCondition = (numeral, quotes, patternSimbols) ->
 
-	theLastPartOfTheRegExp = ""
-	
+	theLastPartOfTheRegExp = patternSimbols.source
+
 	if numeral is ""
 		theLastPartOfTheRegExp = quotes
-	else
-		theLastPartOfTheRegExp = patternSimbols.source
-
+	
 	return theLastPartOfTheRegExp
 
 CssUrlVersioner::getTheLastPart = (quote, numeral, singleQuote, doubleQuotes, patternSimbols) ->

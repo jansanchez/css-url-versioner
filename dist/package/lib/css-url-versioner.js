@@ -133,11 +133,9 @@ CssUrlVersioner.prototype.getQuotesSource = function(quote, singleQuote, doubleQ
 
 CssUrlVersioner.prototype.numeralCondition = function(numeral, quotes, patternSimbols) {
   var theLastPartOfTheRegExp;
-  theLastPartOfTheRegExp = "";
+  theLastPartOfTheRegExp = patternSimbols.source;
   if (numeral === "") {
     theLastPartOfTheRegExp = quotes;
-  } else {
-    theLastPartOfTheRegExp = patternSimbols.source;
   }
   return theLastPartOfTheRegExp;
 };
