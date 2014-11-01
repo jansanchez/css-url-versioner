@@ -116,25 +116,41 @@ CssUrlVersioner::getNewString = (numeral, quote, extension) ->
 
 		return newString
 
-CssUrlVersioner::getTheLastPart = (quote, numeral, singleQuote, doubleQuotes, patternSimbols) ->
+CssUrlVersioner::getQuotesSource = (quote, singleQuote, doubleQuotes) ->
+
+	quotes = ""
+
+	if quote is "'"
+		quotes = singleQuote.source
+
+	if quote is '"'
+		quotes = doubleQuotes.source
+
+	return quotes
+
+CssUrlVersioner::numeralCondition = (numeral, quotes, patternSimbols) ->
 
 	theLastPartOfTheRegExp = ""
 	
-	if quote is ''
-		unless numeral is ""
-			theLastPartOfTheRegExp = patternSimbols.source
+	if numeral is ""
+		theLastPartOfTheRegExp = quotes
 	else
-		switch quote
-			when '"'
-				if numeral is ""
-					theLastPartOfTheRegExp = doubleQuotes.source
-				else
-					theLastPartOfTheRegExp = patternSimbols.source
-			when "'"
-				if numeral is ""
-					theLastPartOfTheRegExp = singleQuote.source
-				else
-					theLastPartOfTheRegExp = patternSimbols.source
+		theLastPartOfTheRegExp = patternSimbols.source
+
+	return theLastPartOfTheRegExp
+
+CssUrlVersioner::getTheLastPart = (quote, numeral, singleQuote, doubleQuotes, patternSimbols) ->
+
+	theLastPartOfTheRegExp = ""
+
+	if (quote is '') and (numeral isnt "")
+		theLastPartOfTheRegExp = patternSimbols.source
+		return theLastPartOfTheRegExp
+
+	quotes = @getQuotesSource(quote, singleQuote, doubleQuotes)
+
+	theLastPartOfTheRegExp = @numeralCondition(numeral, quotes, patternSimbols)
+
 	return theLastPartOfTheRegExp
 
 CssUrlVersioner::insertVersion = () ->

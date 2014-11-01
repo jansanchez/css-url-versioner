@@ -119,30 +119,38 @@ CssUrlVersioner.prototype.getNewString = function(numeral, quote, extension) {
   return newString;
 };
 
-CssUrlVersioner.prototype.getTheLastPart = function(quote, numeral, singleQuote, doubleQuotes, patternSimbols) {
+CssUrlVersioner.prototype.getQuotesSource = function(quote, singleQuote, doubleQuotes) {
+  var quotes;
+  quotes = "";
+  if (quote === "'") {
+    quotes = singleQuote.source;
+  }
+  if (quote === '"') {
+    quotes = doubleQuotes.source;
+  }
+  return quotes;
+};
+
+CssUrlVersioner.prototype.numeralCondition = function(numeral, quotes, patternSimbols) {
   var theLastPartOfTheRegExp;
   theLastPartOfTheRegExp = "";
-  if (quote === '') {
-    if (numeral !== "") {
-      theLastPartOfTheRegExp = patternSimbols.source;
-    }
+  if (numeral === "") {
+    theLastPartOfTheRegExp = quotes;
   } else {
-    switch (quote) {
-      case '"':
-        if (numeral === "") {
-          theLastPartOfTheRegExp = doubleQuotes.source;
-        } else {
-          theLastPartOfTheRegExp = patternSimbols.source;
-        }
-        break;
-      case "'":
-        if (numeral === "") {
-          theLastPartOfTheRegExp = singleQuote.source;
-        } else {
-          theLastPartOfTheRegExp = patternSimbols.source;
-        }
-    }
+    theLastPartOfTheRegExp = patternSimbols.source;
   }
+  return theLastPartOfTheRegExp;
+};
+
+CssUrlVersioner.prototype.getTheLastPart = function(quote, numeral, singleQuote, doubleQuotes, patternSimbols) {
+  var quotes, theLastPartOfTheRegExp;
+  theLastPartOfTheRegExp = "";
+  if ((quote === '') && (numeral !== "")) {
+    theLastPartOfTheRegExp = patternSimbols.source;
+    return theLastPartOfTheRegExp;
+  }
+  quotes = this.getQuotesSource(quote, singleQuote, doubleQuotes);
+  theLastPartOfTheRegExp = this.numeralCondition(numeral, quotes, patternSimbols);
   return theLastPartOfTheRegExp;
 };
 
