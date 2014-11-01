@@ -78,8 +78,76 @@ CssUrlVersioner.prototype.getQueryString = function() {
   this.queryString = '?' + this.options.variable + '=' + this.version;
 };
 
+CssUrlVersioner.prototype.getQuote = function(url, pattern) {
+  var ArrayOfQuotes, Quoutes, quote;
+  ArrayOfQuotes = url.match(pattern);
+  quote = "";
+  if (ArrayOfQuotes !== null) {
+    Quoutes = ArrayOfQuotes.slice(ArrayOfQuotes.length - 1);
+    quote = Quoutes[0];
+  }
+  return quote;
+};
+
+CssUrlVersioner.prototype.getNumeral = function(url, pattern) {
+  var ArrayOfNumerals, numeral, numerals;
+  ArrayOfNumerals = url.match(pattern);
+  numeral = "";
+  if (ArrayOfNumerals !== null) {
+    numerals = ArrayOfNumerals.slice(ArrayOfNumerals.length - 1);
+    numeral = numerals[0];
+  }
+  return numeral;
+};
+
+CssUrlVersioner.prototype.getExtension = function(url, pattern, patternQuotes) {
+  var ArrayOfExtensions, extension, extensions;
+  ArrayOfExtensions = url.match(pattern);
+  extensions = ArrayOfExtensions.slice(ArrayOfExtensions.length - 1);
+  extension = extensions[0].substr(1).replace(patternQuotes, '');
+  return extension;
+};
+
+CssUrlVersioner.prototype.getNewString = function(numeral, quote, extension) {
+  var additionalSign, newString;
+  if (numeral === "") {
+    additionalSign = quote;
+  } else {
+    additionalSign = numeral;
+  }
+  newString = '.' + extension + this.queryString + additionalSign;
+  return newString;
+};
+
+CssUrlVersioner.prototype.getTheLastPart = function(quote, numeral, singleQuote, doubleQuotes, patternSimbols) {
+  var theLastPartOfTheRegExp;
+  theLastPartOfTheRegExp = "";
+  if (quote === '') {
+    if (numeral !== "") {
+      theLastPartOfTheRegExp = patternSimbols.source;
+    }
+  } else {
+    switch (quote) {
+      case '"':
+        if (numeral === "") {
+          theLastPartOfTheRegExp = doubleQuotes.source;
+        } else {
+          theLastPartOfTheRegExp = patternSimbols.source;
+        }
+        break;
+      case "'":
+        if (numeral === "") {
+          theLastPartOfTheRegExp = singleQuote.source;
+        } else {
+          theLastPartOfTheRegExp = patternSimbols.source;
+        }
+    }
+  }
+  return theLastPartOfTheRegExp;
+};
+
 CssUrlVersioner.prototype.insertVersion = function() {
-  var ArrayOfExtensions, ArrayOfNumerals, ArrayOfQuotes, Quoutes, arrayUrl, dot, doubleQuotes, extension, extensions, newRegEx, newString, numeral, numerals, patternExt, patternQuotes, patternSimbols, patternUrl, quote, singleQuote, url, _i, _len;
+  var arrayUrl, dot, doubleQuotes, extension, newRegEx, newString, numeral, patternExt, patternQuotes, patternSimbols, patternUrl, quote, singleQuote, theLastPartOfTheRegExp, url, _i, _len;
   patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g;
   patternQuotes = /(\"|\')/g;
   patternExt = /(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?/g;
@@ -90,49 +158,12 @@ CssUrlVersioner.prototype.insertVersion = function() {
   arrayUrl = this.options.content.match(patternUrl);
   for (_i = 0, _len = arrayUrl.length; _i < _len; _i++) {
     url = arrayUrl[_i];
-    quote = "";
-    numeral = "";
-    ArrayOfQuotes = url.match(patternQuotes);
-    if (ArrayOfQuotes !== null) {
-      Quoutes = ArrayOfQuotes.slice(ArrayOfQuotes.length - 1);
-      quote = Quoutes[0];
-    }
-    ArrayOfNumerals = url.match(patternSimbols);
-    if (ArrayOfNumerals !== null) {
-      numerals = ArrayOfNumerals.slice(ArrayOfNumerals.length - 1);
-      numeral = numerals[0];
-    }
-    ArrayOfExtensions = url.match(patternExt);
-    extensions = ArrayOfExtensions.slice(ArrayOfExtensions.length - 1);
-    extension = extensions[0].substr(1).replace(patternQuotes, '');
-    if (numeral === "") {
-      newString = '.' + extension + this.queryString + quote;
-    } else {
-      newString = '.' + extension + this.queryString + numeral;
-    }
-    if (quote === '') {
-      if (numeral === "") {
-        newRegEx = new RegExp(dot.source + extension);
-      } else {
-        newRegEx = new RegExp(dot.source + extension + patternSimbols.source);
-      }
-    } else {
-      switch (quote) {
-        case '"':
-          if (numeral === "") {
-            newRegEx = new RegExp(dot.source + extension + doubleQuotes.source);
-          } else {
-            newRegEx = new RegExp(dot.source + extension + patternSimbols.source);
-          }
-          break;
-        case "'":
-          if (numeral === "") {
-            newRegEx = new RegExp(dot.source + extension + singleQuote.source);
-          } else {
-            newRegEx = new RegExp(dot.source + extension + patternSimbols.source);
-          }
-      }
-    }
+    quote = this.getQuote(url, patternQuotes);
+    numeral = this.getNumeral(url, patternSimbols);
+    extension = this.getExtension(url, patternExt, patternQuotes);
+    newString = this.getNewString(numeral, quote, extension);
+    theLastPartOfTheRegExp = this.getTheLastPart(quote, numeral, singleQuote, doubleQuotes, patternSimbols);
+    newRegEx = new RegExp(dot.source + extension + theLastPartOfTheRegExp);
     this.options.content = this.options.content.replace(newRegEx, newString);
     newRegEx.lastIndex = 0;
     patternExt.lastIndex = 0;

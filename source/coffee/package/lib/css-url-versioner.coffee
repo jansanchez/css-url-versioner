@@ -74,6 +74,69 @@ CssUrlVersioner::getQueryString = () ->
 	@queryString = '?' + @options.variable + '=' + @version
 	return
 
+CssUrlVersioner::getQuote = (url, pattern) ->
+	
+	ArrayOfQuotes = url.match(pattern)
+	quote = ""
+
+	unless ArrayOfQuotes is null
+		Quoutes = ArrayOfQuotes.slice(ArrayOfQuotes.length-1)
+		quote = Quoutes[0]
+
+	return quote
+
+CssUrlVersioner::getNumeral = (url, pattern) ->
+
+	ArrayOfNumerals = url.match(pattern)
+	numeral = ""
+
+	unless ArrayOfNumerals is null
+		numerals = ArrayOfNumerals.slice(ArrayOfNumerals.length-1)
+		numeral = numerals[0]
+
+	return numeral
+
+CssUrlVersioner::getExtension = (url, pattern, patternQuotes) ->
+
+	ArrayOfExtensions = url.match(pattern)
+	extensions = ArrayOfExtensions.slice(ArrayOfExtensions.length-1)
+
+	extension = extensions[0].substr(1).replace(patternQuotes, '')
+
+	return extension
+
+CssUrlVersioner::getNewString = (numeral, quote, extension) ->
+
+		if numeral is ""
+			additionalSign = quote
+		else
+			additionalSign = numeral
+
+		newString = '.' + extension + @queryString + additionalSign
+
+		return newString
+
+CssUrlVersioner::getTheLastPart = (quote, numeral, singleQuote, doubleQuotes, patternSimbols) ->
+
+	theLastPartOfTheRegExp = ""
+	
+	if quote is ''
+		unless numeral is ""
+			theLastPartOfTheRegExp = patternSimbols.source
+	else
+		switch quote
+			when '"'
+				if numeral is ""
+					theLastPartOfTheRegExp = doubleQuotes.source
+				else
+					theLastPartOfTheRegExp = patternSimbols.source
+			when "'"
+				if numeral is ""
+					theLastPartOfTheRegExp = singleQuote.source
+				else
+					theLastPartOfTheRegExp = patternSimbols.source
+	return theLastPartOfTheRegExp
+
 CssUrlVersioner::insertVersion = () ->
 
 	patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g
@@ -84,56 +147,19 @@ CssUrlVersioner::insertVersion = () ->
 	doubleQuotes  = /\"/
 	singleQuote = /\'/
 	dot = /\./
-	
+
 	arrayUrl = @options.content.match(patternUrl)
 
 	for url in arrayUrl
-		quote = ""
-		numeral = ""
 
-		ArrayOfQuotes = url.match(patternQuotes)
+		quote = @getQuote(url, patternQuotes)
+		numeral = @getNumeral(url, patternSimbols)
+		extension = @getExtension(url, patternExt, patternQuotes)
+		newString = @getNewString(numeral, quote, extension)
 
-		unless ArrayOfQuotes is null
-			Quoutes = ArrayOfQuotes.slice(ArrayOfQuotes.length-1)
-			quote = Quoutes[0]
+		theLastPartOfTheRegExp = @getTheLastPart(quote, numeral, singleQuote, doubleQuotes, patternSimbols)
 
-		ArrayOfNumerals = url.match(patternSimbols)
-
-		unless ArrayOfNumerals is null
-			numerals = ArrayOfNumerals.slice(ArrayOfNumerals.length-1)
-			numeral = numerals[0]
-
-		ArrayOfExtensions = url.match(patternExt)
-		extensions = ArrayOfExtensions.slice(ArrayOfExtensions.length-1)
-
-		extension = extensions[0].substr(1).replace(patternQuotes, '')
-
-
-
-		if numeral is ""
-			newString = '.' + extension + @queryString + quote
-		else
-			newString = '.' + extension + @queryString + numeral
-
-
-
-		if quote is ''
-			if numeral is ""
-				newRegEx = new RegExp(dot.source + extension)
-			else
-				newRegEx = new RegExp(dot.source + extension + patternSimbols.source)			
-		else
-			switch quote
-				when '"'
-					if numeral is ""
-						newRegEx = new RegExp(dot.source + extension + doubleQuotes.source)
-					else
-						newRegEx = new RegExp(dot.source + extension + patternSimbols.source)
-				when "'"
-					if numeral is ""
-						newRegEx = new RegExp(dot.source + extension + singleQuote.source)
-					else
-						newRegEx = new RegExp(dot.source + extension + patternSimbols.source)
+		newRegEx = new RegExp(dot.source + extension + theLastPartOfTheRegExp)
 
 		@options.content = @options.content.replace(newRegEx, newString)
 		
