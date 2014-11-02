@@ -75,7 +75,7 @@ describe('cssUrl', () ->
 						 'url(img/abc.dfg.png)', 'url(img/abc.dfg.png' + queryString + ')',
 						 'url(img/klm.nop.png#slug)', 'url(img/klm.nop.png' + queryString + '#slug)']
 		
-		describe('Without quotes', () ->
+		describe('Without quotes:', () ->
 
 			describe(withoutQuotes[0], () ->
 
@@ -131,6 +131,132 @@ describe('cssUrl', () ->
 
 			return
 		)
+
+		withSingleQuotes = ["url('sprite.png')", "url('sprite.png" + queryString + "')",
+							"url('fonts/new.eot#ie')", "url('fonts/new.eot" + queryString + "#ie')",
+							"url('img/abc.dfg.png')", "url('img/abc.dfg.png" + queryString + "')",
+							"url('img/klm.nop.png#slug')", "url('img/klm.nop.png" + queryString + "#slug')"]
+		
+		describe("With single quotes: '", () ->
+
+			describe(withSingleQuotes[0], () ->
+
+				instance = cssVersioner({
+					content: withSingleQuotes[0]
+				})
+
+				it(withSingleQuotes[0] + ' should be convert to: ' + withSingleQuotes[1] + '.', () ->
+					instance.output.should.be.equal(withSingleQuotes[1])
+					return
+				)
+				return
+			)
+
+			describe(withSingleQuotes[2], () ->
+
+				instance = cssVersioner({
+					content: withSingleQuotes[2]
+				})
+
+				it(withSingleQuotes[2] + ' should be convert to: ' + withSingleQuotes[3] + '.', () ->
+					instance.output.should.be.equal(withSingleQuotes[3])
+					return
+				)
+				return
+			)
+
+			describe(withSingleQuotes[4], () ->
+
+				instance = cssVersioner({
+					content: withSingleQuotes[4]
+				})
+
+				it(withSingleQuotes[4] + ' should be convert to: ' + withSingleQuotes[5] + '.', () ->
+					instance.output.should.be.equal(withSingleQuotes[5])
+					return
+				)
+				return
+			)
+
+			describe(withSingleQuotes[6], () ->
+
+				instance = cssVersioner({
+					content: withSingleQuotes[6]
+				})
+
+				it(withSingleQuotes[6] + ' should be convert to: ' + withSingleQuotes[7] + '.', () ->
+					instance.output.should.be.equal(withSingleQuotes[7])
+					return
+				)
+				return
+			)
+
+			return
+		)
+
+		withDoubleQuotes = ['url("sprite.png")', 'url("sprite.png' + queryString + '")',
+							'url("fonts/new.eot#ie")', 'url("fonts/new.eot' + queryString + '#ie")',
+							'url("img/abc.dfg.png")', 'url("img/abc.dfg.png' + queryString + '")',
+							'url("img/klm.nop.png#slug")', 'url("img/klm.nop.png' + queryString + '#slug")']
+		
+		
+		describe('With double quotes: "', () ->
+
+			describe(withDoubleQuotes[0], () ->
+
+				instance = cssVersioner({
+					content: withDoubleQuotes[0]
+				})
+
+				it(withDoubleQuotes[0] + ' should be convert to: ' + withDoubleQuotes[1] + '.', () ->
+					instance.output.should.be.equal(withDoubleQuotes[1])
+					return
+				)
+				return
+			)
+
+			describe(withDoubleQuotes[2], () ->
+
+				instance = cssVersioner({
+					content: withDoubleQuotes[2]
+				})
+
+				it(withDoubleQuotes[2] + ' should be convert to: ' + withDoubleQuotes[3] + '.', () ->
+					instance.output.should.be.equal(withDoubleQuotes[3])
+					return
+				)
+				return
+			)
+
+			describe(withDoubleQuotes[4], () ->
+
+				instance = cssVersioner({
+					content: withDoubleQuotes[4]
+				})
+
+				it(withDoubleQuotes[4] + ' should be convert to: ' + withDoubleQuotes[5] + '.', () ->
+					instance.output.should.be.equal(withDoubleQuotes[5])
+					return
+				)
+				return
+			)
+
+			describe(withDoubleQuotes[6], () ->
+
+				instance = cssVersioner({
+					content: withDoubleQuotes[6]
+				})
+
+				it(withDoubleQuotes[6] + ' should be convert to: ' + withDoubleQuotes[7] + '.', () ->
+					instance.output.should.be.equal(withDoubleQuotes[7])
+					return
+				)
+				return
+			)
+
+			return
+		)
+
 
 		return
 	)
