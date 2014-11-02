@@ -141,7 +141,7 @@ gulp.task('lint', function() {
 
 gulp.task('complexity', function(){
     return gulp.src(path.javascript.complexity)
-    .pipe(plugins.complexity());
+    .pipe(plugins.complexity({breakOnErrors: false}));
 });
 
 
