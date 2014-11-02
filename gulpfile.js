@@ -181,6 +181,9 @@ gulp.task('mocha', function () {
     ));
 });
 
+/*
+* Task for test my package
+*/
 
 var cssVersioner = require('./dist/package/index');
 
