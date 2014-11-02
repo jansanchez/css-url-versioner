@@ -2,13 +2,13 @@
 /*
 Test: cssUrl
  */
-var cssVersioner, d, data, fs, instance, version;
+var cssVersioner, d, data, fs, mainInstance, version;
 
 fs = require('fs');
 
 cssVersioner = require('../../dist/package/index');
 
-instance = null;
+mainInstance = null;
 
 d = new Date();
 
@@ -16,7 +16,7 @@ version = d.getFullYear().toString() + (d.getMonth() + 1).toString() + d.getDate
 
 data = fs.readFileSync('./test/css/test.css', 'utf8');
 
-instance = cssVersioner({
+mainInstance = cssVersioner({
   content: data,
   variable: 'z'
 });
@@ -26,30 +26,73 @@ describe('cssUrl', function() {
   options = {};
   beforeEach(function() {});
   describe('Extend', function() {
-    it('instance.options.variable should be equal to "z".', function() {
-      instance.options.variable.should.be.equal('z');
+    it('mainInstance.options.variable should be equal to "z".', function() {
+      mainInstance.options.variable.should.be.equal('z');
     });
   });
   describe('Default Version', function() {
-    it('instance.version should be equal to ' + version + '.', function() {
-      instance.version.should.be.equal(version);
+    it('mainInstance.version should be equal to ' + version + '.', function() {
+      mainInstance.version.should.be.equal(version);
     });
   });
   describe('Custom Version', function() {
-    var otherInstance;
-    otherInstance = cssVersioner({
+    var instance;
+    instance = cssVersioner({
       content: data,
       version: 'myVersion'
     });
-    it('otherInstance.version should be equal to "myVersion".', function() {
-      otherInstance.version.should.be.equal("myVersion");
+    it('instance.version should be equal to "myVersion".', function() {
+      instance.version.should.be.equal("myVersion");
     });
   });
   describe('Query String', function() {
     var queryString;
     queryString = '?z=' + version;
-    it('instance.queryString should be equal to ' + queryString + '.', function() {
-      instance.queryString.should.be.equal(queryString);
+    it('mainInstance.queryString should be equal to ' + queryString + '.', function() {
+      mainInstance.queryString.should.be.equal(queryString);
+    });
+  });
+  describe('Generated versions', function() {
+    var queryString, withoutQuotes;
+    queryString = '?v=' + version;
+    withoutQuotes = ['url(sprite.png)', 'url(sprite.png' + queryString + ')', 'url(fonts/new.eot#ie)', 'url(fonts/new.eot' + queryString + '#ie)', 'url(img/abc.dfg.png)', 'url(img/abc.dfg.png' + queryString + ')', 'url(img/klm.nop.png#slug)', 'url(img/klm.nop.png' + queryString + '#slug)'];
+    describe('Without quotes', function() {
+      describe(withoutQuotes[0], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withoutQuotes[0]
+        });
+        it(withoutQuotes[0] + ' should be convert to: ' + withoutQuotes[1] + '.', function() {
+          instance.output.should.be.equal(withoutQuotes[1]);
+        });
+      });
+      describe(withoutQuotes[2], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withoutQuotes[2]
+        });
+        it(withoutQuotes[2] + ' should be convert to: ' + withoutQuotes[3] + '.', function() {
+          instance.output.should.be.equal(withoutQuotes[3]);
+        });
+      });
+      describe(withoutQuotes[4], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withoutQuotes[4]
+        });
+        it(withoutQuotes[4] + ' should be convert to: ' + withoutQuotes[5] + '.', function() {
+          instance.output.should.be.equal(withoutQuotes[5]);
+        });
+      });
+      describe(withoutQuotes[6], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withoutQuotes[6]
+        });
+        it(withoutQuotes[6] + ' should be convert to: ' + withoutQuotes[7] + '.', function() {
+          instance.output.should.be.equal(withoutQuotes[7]);
+        });
+      });
     });
   });
 });
