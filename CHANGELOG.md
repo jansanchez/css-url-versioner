@@ -1,3 +1,6 @@
+## 1.0.0 (2014-11-01)
+
+
 ### 0.1.2 (2014-11-01)
 
 * **coverage:** Agregando covertura de codigo al proyecto.

@@ -1,6 +1,6 @@
 {
   "name": "css-url-versioner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "css-url-versioner",
   "main": "dist/package/index",
   "scripts": {
