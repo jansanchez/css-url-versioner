@@ -54,7 +54,7 @@ gulp.task('bump', function(){
 });
 
 gulp.task('version', function () {
-    plugins.runSequence(['bump', 'log'], cb);
+    plugins.runSequence(['log', 'bump'], cb);
 });
 
 /*!!
