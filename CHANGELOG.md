@@ -1,3 +1,8 @@
+### 0.1.2 (2014-11-01)
+
+* **coverage:** Agregando covertura de codigo al proyecto.
+* **mocha:** Agregando pruebas unitarias para el package.
+
 ### 0.1.1 (2014-10-28)
 
 
