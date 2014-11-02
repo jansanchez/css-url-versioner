@@ -2,8 +2,10 @@
 Test: cssUrl
 ###
 
+#mocha = require('mocha')
 fs      = require('fs')
 cssVersioner = require('../../dist/package/index')
+#should = require('should')
 
 instance = null
 d = new Date()

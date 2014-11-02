@@ -4,7 +4,9 @@
   "description": "css-url-versioner",
   "main": "dist/package/index",
   "scripts": {
-    "test": "mocha"
+    "start": "gulp",
+    "test": "gulp mocha",
+    "coveralls": "istanbul cover _mocha --report lcovonly -- -R spec && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
@@ -41,7 +43,9 @@
     "node-notifier": "^3.2.1",
     "run-sequence": "^0.3.6",
     "should": "~4.0.4",
-    "gulp-mocha": "~1.1.1"
+    "gulp-mocha": "~1.1.1",
+    "coveralls": "~2.11.2",
+    "istanbul": "~0.3.2"
   },
   "dependencies": {
     "rimraf": "~2.2.8"

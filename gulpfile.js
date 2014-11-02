@@ -146,7 +146,7 @@ gulp.task('complexity', function(){
 
 
 gulp.task('js', function(cb) {
-    plugins.runSequence('clean:js', 'coffee', 'copy:js:test', 'clean:js:test', 'lint', 'mocha', cb);
+    plugins.runSequence('clean:js', 'coffee', 'copy:js:test', 'clean:js:test', 'lint', cb);
 });
 
 

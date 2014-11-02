@@ -7,3 +7,10 @@ npm-debug.log
 
 done
 output
+
+coverage
+*.orig
+.idea
+
+*.log
+
