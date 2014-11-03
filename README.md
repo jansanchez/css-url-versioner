@@ -1,6 +1,6 @@
 
 
-# CSS Url Versioner [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coveralls Status][coveralls-image]][coveralls-url]
+# CSS Url Versioner [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coveralls Status][coveralls-image]][coveralls-url] [![Codeship Status][codeship-image]][codeship-url]
 
 > A node package for css url versioner
 
@@ -90,3 +90,6 @@ If we want that version to be our short version of last commit in git, configure
 
 [coveralls-url]: https://coveralls.io/r/jansanchez/css-url-versioner
 [coveralls-image]: https://img.shields.io/coveralls/jansanchez/css-url-versioner.svg
+
+[codeship-url]: https://www.codeship.io/projects/44868
+[codeship-image]: https://codeship.io/projects/221e0440-44c9-0132-43bc-1e738e05cfd5/status?branch=master
