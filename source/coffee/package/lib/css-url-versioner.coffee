@@ -196,4 +196,3 @@ CssUrlVersioner::insertVersion = () ->
 ###
 
 module.exports = CssUrlVersioner
-
