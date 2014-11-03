@@ -80,6 +80,58 @@ If we want that version to be our short version of last commit in git, configure
 {lastcommit: true}
 ```
 
+### Examples
+
+#####lastcommit: true
+
+```
+var data = '.some_selector{background-image: url("img/sprite.png");}';
+
+var cssVersioned = cssVersioner({
+    content: data,
+    lastcommit: true
+});
+
+console.log(cssVersioned.output);
+
+//logs: '.some_selector{background-image: url("img/sprite.png?v=dc31e29");}';
+
+```
+
+#####lastcommit: true and variable: 'myVersion'
+```
+var data = '@font-face{ 
+    			font-family: 'gotham'; 
+				src: url("fonts/gotham.svg#gotham") format('svg');
+			}';
+
+var cssVersioned = cssVersioner({
+    content: data,
+    variable: 'myVersion'
+    lastcommit: true
+});
+
+console.log(cssVersioned.output);
+
+//logs: '@font-face{ font-family: 'gotham'; src: url("fonts/gotham.svg?myVersion=dc31e29#gotham") format('svg'); }';
+
+```
+
+#####version: Math.random()
+```
+var data = '.some_selector{background-image: url("img/sprite.png");}';
+
+var cssVersioned = cssVersioner({
+    content: data,
+    version: Math.random()
+});
+
+console.log(cssVersioned.output);
+
+//logs: '.some_selector{background-image: url("img/sprite.png?v=0.82140917");}';
+
+```
+
 
 [downloads-image]: http://img.shields.io/npm/dm/css-url-versioner.svg
 [npm-url]: https://www.npmjs.org/package/css-url-versioner
