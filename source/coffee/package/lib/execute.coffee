@@ -25,16 +25,9 @@ Execute::runCommand = (command) ->
 	newCommand = command + " 2>&1 1>output && echo done > done"
 
 	execute(newCommand)
-	@validateOutput(command)
-	return @output
-
-Execute::validateOutput = (command) ->
 	@readFile()
-	if @output is ''
-		console.log('esto llega a pasar en algun momento?')
-		@runCommand(command)
 	@reset()
-	return
+	return @output
 
 Execute::readFile = () ->
 	flag = true

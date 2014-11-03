@@ -32,17 +32,9 @@ Execute.prototype.runCommand = function(command) {
   var newCommand;
   newCommand = command + " 2>&1 1>output && echo done > done";
   execute(newCommand);
-  this.validateOutput(command);
-  return this.output;
-};
-
-Execute.prototype.validateOutput = function(command) {
   this.readFile();
-  if (this.output === '') {
-    console.log('esto llega a pasar en algun momento?');
-    this.runCommand(command);
-  }
   this.reset();
+  return this.output;
 };
 
 Execute.prototype.readFile = function() {
