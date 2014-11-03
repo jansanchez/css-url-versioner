@@ -31,11 +31,7 @@ Execute = function(settings) {
 Execute.prototype.runCommand = function(command) {
   var newCommand;
   newCommand = command + " 2>&1 1>output && echo done > done";
-  execute(newCommand, function(error, stdout, stderr) {
-    if (error) {
-      console.log(stdout);
-    }
-  });
+  execute(newCommand);
   this.validateOutput(command);
   return this.output;
 };

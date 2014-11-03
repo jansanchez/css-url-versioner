@@ -24,11 +24,7 @@ Execute = (settings) ->
 Execute::runCommand = (command) ->
 	newCommand = command + " 2>&1 1>output && echo done > done"
 
-	execute(newCommand, (error, stdout, stderr) ->
-		if (error)
-			console.log(stdout)
-			return
-	)
+	execute(newCommand)
 	@validateOutput(command)
 	return @output
 
