@@ -30,6 +30,16 @@ describe('cssUrl', function() {
       mainInstance.options.variable.should.be.equal('z');
     });
   });
+  describe('Last commit', function() {
+    var instance;
+    instance = cssVersioner({
+      content: data,
+      lastcommit: true
+    });
+    it('instance.lastcommit should be equal to ' + true + '.', function() {
+      instance.options.lastcommit.should.be.equal(true);
+    });
+  });
   describe('Default Version', function() {
     it('mainInstance.version should be equal to ' + version + '.', function() {
       mainInstance.version.should.be.equal(version);

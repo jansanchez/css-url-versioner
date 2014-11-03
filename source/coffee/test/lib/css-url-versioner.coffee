@@ -34,6 +34,19 @@ describe('cssUrl', () ->
 		return
 	)
 
+	describe('Last commit', () ->
+		instance = cssVersioner({
+			content: data,
+			lastcommit: true
+		})
+		
+		it('instance.lastcommit should be equal to ' + true + '.', () ->
+			instance.options.lastcommit.should.be.equal(true)
+			return
+		)
+		return
+	)	
+
 	describe('Default Version', () ->
 		it('mainInstance.version should be equal to ' + version + '.', () ->
 			mainInstance.version.should.be.equal(version)
