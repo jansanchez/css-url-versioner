@@ -1,7 +1,7 @@
 {
   "name": "css-url-versioner",
   "version": "1.0.2",
-  "description": "css-url-versioner",
+  "description": "A node package for css url versioner",
   "main": "dist/package/index",
   "scripts": {
     "start": "gulp",
@@ -21,7 +21,7 @@
   "author": "jansanchez",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jansanchez/gulp-recursive-concat/issues"
+    "url": "https://github.com/jansanchez/css-url-versioner/issues"
   },
   "devDependencies": {
     "conventional-changelog": "0.0.11",
