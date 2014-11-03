@@ -37,7 +37,7 @@ var cssVersioned = cssVersioner({
 
 console.log(cssVersioned.output);
 
-//logs: '.some_selector{background-image: url("img/sprite.png?2014111");}';
+//logs: '.some_selector{background-image: url("img/sprite.png?v=2014111");}';
 
 ```
 
