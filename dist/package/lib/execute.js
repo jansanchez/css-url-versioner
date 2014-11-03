@@ -39,6 +39,7 @@ Execute.prototype.runCommand = function(command) {
 Execute.prototype.validateOutput = function(command) {
   this.readFile();
   if (this.output === '') {
+    console.log('esto llega a pasar en algun momento?');
     this.runCommand(command);
   }
   this.reset();
@@ -50,7 +51,7 @@ Execute.prototype.readFile = function() {
   this.output = 'error';
   while (!fs.existsSync('./done')) {
     this.attempts++;
-    if (this.attempts > 10000) {
+    if (this.attempts > 250) {
       flag = false;
       break;
     }

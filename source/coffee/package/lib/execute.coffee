@@ -31,6 +31,7 @@ Execute::runCommand = (command) ->
 Execute::validateOutput = (command) ->
 	@readFile()
 	if @output is ''
+		console.log('esto llega a pasar en algun momento?')
 		@runCommand(command)
 	@reset()
 	return
@@ -41,7 +42,7 @@ Execute::readFile = () ->
 
 	while (!fs.existsSync('./done'))
 		@attempts++
-		if @attempts > 10000
+		if @attempts > 250
 			flag = false
 			break
 	
