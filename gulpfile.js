@@ -6,7 +6,6 @@
  */
 
 var gulp = require('gulp'),
-stylish = require('jshint-stylish'),
 changelog = require('conventional-changelog'),
 bump = require('gulp-bump'),
 tagVersion = require('gulp-tag-version'),
@@ -16,8 +15,7 @@ loadPlugins = require('gulp-load-plugins'),
 package = require('./package.json'),
 notify = require("node-notifier"),
 path = require('./gulp/path'),
-options = require('./gulp/options'),
-config = require('./gulp/config.local');
+options = require('./gulp/options');
 
 var notifier = new notify(),
 plugins = loadPlugins();
@@ -53,7 +51,7 @@ gulp.task('bump', function(){
     .pipe(tagVersion());
 });
 
-gulp.task('version', function () {
+gulp.task('version', function (cb) {
     plugins.runSequence(['log', 'bump'], cb);
 });
 
@@ -187,7 +185,7 @@ gulp.task('mocha', function () {
 
 var cssVersioner = require('./dist/package/index');
 
-gulp.task('versioner', function (cb) {
+gulp.task('versioner', function () {
     fs.readFile('test/css/test.css', 'utf8', function (err, data) {
         var a = cssVersioner({
             content: data,
