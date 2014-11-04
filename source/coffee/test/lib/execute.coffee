@@ -17,7 +17,7 @@ describe('Execute', () ->
 		return
 	)
 
-	response = exec.runCommand()
+	response = exec.runCommand(command)
 
 	describe('runCommand()', () ->
 
