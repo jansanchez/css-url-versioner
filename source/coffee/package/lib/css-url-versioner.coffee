@@ -183,9 +183,12 @@ CssUrlVersioner::insertVersion = () ->
 		patternExt.lastIndex = 0
 		patternQuotes.lastIndex = 0
 		patternSimbols.lastIndex = 0
-		dot.lastIndex = 0
 		doubleQuotes.lastIndex = 0
 		singleQuote.lastIndex = 0
+		theLastPartOfTheRegExp.lastIndex = 0
+		dot.lastIndex = 0
+
+	patternUrl.lastIndex = 0
 
 	@output = @options.content
 
