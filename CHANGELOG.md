@@ -1,3 +1,13 @@
+### 1.0.4 (2014-11-04)
+
+
+#### Bug Fixes
+
+* **insertVersion:**
+  * Se corrige el error al no encontrar ninguna ocurrencia. ([5cd1ff53](https://github.com/jansanchez/css-url-versioner.git/commit/5cd1ff5381b9eb61ad3fd01c320afeda3bc62e0b))
+  * Se corrige el error al no encontrar ninguna ocurrencia. ([d0332ee9](https://github.com/jansanchez/css-url-versioner.git/commit/d0332ee9eb75c82c49302a073557e50f3e28d15f))
+
+
 ### 1.0.1 (2014-11-03)
 
 
