@@ -1,6 +1,6 @@
 {
   "name": "css-url-versioner",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A node package for css url versioner",
   "main": "dist/package/index",
   "scripts": {
