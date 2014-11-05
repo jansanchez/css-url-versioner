@@ -161,7 +161,7 @@ CssUrlVersioner.prototype.insertVersion = function() {
   doubleQuotes = /\"/;
   singleQuote = /\'/;
   dot = /\./;
-  arrayUrl = this.options.content.match(patternUrl);
+  arrayUrl = this.options.content.match(patternUrl) || [];
   for (_i = 0, _len = arrayUrl.length; _i < _len; _i++) {
     url = arrayUrl[_i];
     quote = this.getQuote(url, patternQuotes);
