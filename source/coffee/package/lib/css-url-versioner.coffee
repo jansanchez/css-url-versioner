@@ -162,7 +162,7 @@ CssUrlVersioner::insertVersion = () ->
 	singleQuote = /\'/
 	dot = /\./
 
-	arrayUrl = @options.content.match(patternUrl)
+	arrayUrl = @options.content.match(patternUrl) or []
 
 	for url in arrayUrl
 
