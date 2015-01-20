@@ -1,3 +1,11 @@
+### 1.0.6 (2015-01-20)
+
+
+#### Bug Fixes
+
+* **package:** Mejora en la expresion regular de urls ([889cd449](https://github.com/jansanchez/css-url-versioner.git/commit/889cd44905afbdbe57e65d75c9abdac1ca1b3f25), closes [#1](https://github.com/jansanchez/css-url-versioner.git/issues/1))
+
+
 ### 1.0.5 (2014-11-05)
 
 
