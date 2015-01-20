@@ -109,10 +109,10 @@ CssUrlVersioner::getNewString = (numeral, quote, extension) ->
 
 		if numeral is ""
 			additionalSign = quote
+			newString = '.' + extension + @queryString + additionalSign + ')'
 		else
 			additionalSign = numeral
-
-		newString = '.' + extension + @queryString + additionalSign
+			newString = '.' + extension + @queryString + additionalSign
 
 		return newString
 
@@ -161,6 +161,7 @@ CssUrlVersioner::insertVersion = () ->
 	doubleQuotes  = /\"/
 	singleQuote = /\'/
 	dot = /\./
+	patternRightBracket = /[\)]{1}/
 
 	arrayUrl = @options.content.match(patternUrl) or []
 
@@ -169,11 +170,15 @@ CssUrlVersioner::insertVersion = () ->
 		quote = @getQuote(url, patternQuotes)
 		numeral = @getNumeral(url, patternSimbols)
 		extension = @getExtension(url, patternExt, patternQuotes)
-		newString = @getNewString(numeral, quote, extension)
-
+		
 		theLastPartOfTheRegExp = @getTheLastPart(quote, numeral, singleQuote, doubleQuotes, patternSimbols)
 
-		newRegEx = new RegExp(dot.source + extension + theLastPartOfTheRegExp)
+		newString = @getNewString(numeral, quote, extension)
+
+		if numeral is ""
+			newRegEx = new RegExp(dot.source + extension + theLastPartOfTheRegExp + patternRightBracket.source)
+		else
+			newRegEx = new RegExp(dot.source + extension + theLastPartOfTheRegExp)
 
 		@options.content = @options.content.replace(newRegEx, newString)
 		
@@ -187,6 +192,7 @@ CssUrlVersioner::insertVersion = () ->
 		singleQuote.lastIndex = 0
 		theLastPartOfTheRegExp.lastIndex = 0
 		dot.lastIndex = 0
+		patternRightBracket.lastIndex = 0
 
 	patternUrl.lastIndex = 0
 

@@ -15,3 +15,5 @@
 	 	 url('../fonts/new.ttf#fix') format('truetype'),
 		 url("../fonts/new.svg#gotham") format('svg');
 }
+.book_claims{background-image: url(../../../img/sprite.png);}
+.payment.verified{background-image: url(../../img/sprite.png);}

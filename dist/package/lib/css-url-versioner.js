@@ -112,10 +112,11 @@ CssUrlVersioner.prototype.getNewString = function(numeral, quote, extension) {
   var additionalSign, newString;
   if (numeral === "") {
     additionalSign = quote;
+    newString = '.' + extension + this.queryString + additionalSign + ')';
   } else {
     additionalSign = numeral;
+    newString = '.' + extension + this.queryString + additionalSign;
   }
-  newString = '.' + extension + this.queryString + additionalSign;
   return newString;
 };
 
@@ -153,7 +154,7 @@ CssUrlVersioner.prototype.getTheLastPart = function(quote, numeral, singleQuote,
 };
 
 CssUrlVersioner.prototype.insertVersion = function() {
-  var arrayUrl, dot, doubleQuotes, extension, newRegEx, newString, numeral, patternExt, patternQuotes, patternSimbols, patternUrl, quote, singleQuote, theLastPartOfTheRegExp, url, _i, _len;
+  var arrayUrl, dot, doubleQuotes, extension, newRegEx, newString, numeral, patternExt, patternQuotes, patternRightBracket, patternSimbols, patternUrl, quote, singleQuote, theLastPartOfTheRegExp, url, _i, _len;
   patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g;
   patternQuotes = /(\"|\')/g;
   patternExt = /(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?/g;
@@ -161,15 +162,20 @@ CssUrlVersioner.prototype.insertVersion = function() {
   doubleQuotes = /\"/;
   singleQuote = /\'/;
   dot = /\./;
+  patternRightBracket = /[\)]{1}/;
   arrayUrl = this.options.content.match(patternUrl) || [];
   for (_i = 0, _len = arrayUrl.length; _i < _len; _i++) {
     url = arrayUrl[_i];
     quote = this.getQuote(url, patternQuotes);
     numeral = this.getNumeral(url, patternSimbols);
     extension = this.getExtension(url, patternExt, patternQuotes);
-    newString = this.getNewString(numeral, quote, extension);
     theLastPartOfTheRegExp = this.getTheLastPart(quote, numeral, singleQuote, doubleQuotes, patternSimbols);
-    newRegEx = new RegExp(dot.source + extension + theLastPartOfTheRegExp);
+    newString = this.getNewString(numeral, quote, extension);
+    if (numeral === "") {
+      newRegEx = new RegExp(dot.source + extension + theLastPartOfTheRegExp + patternRightBracket.source);
+    } else {
+      newRegEx = new RegExp(dot.source + extension + theLastPartOfTheRegExp);
+    }
     this.options.content = this.options.content.replace(newRegEx, newString);
     newRegEx.lastIndex = 0;
     patternExt.lastIndex = 0;
@@ -179,6 +185,7 @@ CssUrlVersioner.prototype.insertVersion = function() {
     singleQuote.lastIndex = 0;
     theLastPartOfTheRegExp.lastIndex = 0;
     dot.lastIndex = 0;
+    patternRightBracket.lastIndex = 0;
   }
   patternUrl.lastIndex = 0;
   this.output = this.options.content;
