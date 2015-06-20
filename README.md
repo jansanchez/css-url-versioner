@@ -71,7 +71,7 @@ Here you go a custom version if you so desire, but if we do not put this key, th
 {version: '0.0.2'}
 ```
 
-#### lastcommit: 
+### lastcommit: 
 Default: `false`
 
 If we want that version to be our short version of last commit in git, configured 'lastcommit' to true.
@@ -82,7 +82,7 @@ If we want that version to be our short version of last commit in git, configure
 
 ### Examples
 
-#####lastcommit: true
+#### lastcommit: true
 
 ```
 var data = '.some_selector{background-image: url("img/sprite.png");}';
@@ -98,7 +98,7 @@ console.log(cssVersioned.output);
 
 ```
 
-#####lastcommit: true and variable: 'myVersion'
+#### lastcommit: true and variable: 'myVersion'
 ```
 var data = '@font-face{ 
     			font-family: 'gotham'; 
@@ -117,7 +117,7 @@ console.log(cssVersioned.output);
 
 ```
 
-#####version: Math.random()
+#### version: Math.random()
 ```
 var data = '.some_selector{background-image: url("img/sprite.png");}';
 
