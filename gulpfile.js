@@ -13,17 +13,15 @@ filter = require('gulp-filter'),
 fs = require('fs'),
 loadPlugins = require('gulp-load-plugins'),
 package = require('./package.json'),
-notify = require("node-notifier"),
+notifier = require("node-notifier"),
 path = require('./gulp/path'),
 options = require('./gulp/options');
 
-var notifier = new notify(),
-plugins = loadPlugins();
+var plugins = loadPlugins();
 
 plugins.runSequence = require('run-sequence');
 
 var coffeeTasks = ['js'];
-
 
 
 /*!!
