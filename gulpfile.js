@@ -10,6 +10,7 @@ changelog = require('conventional-changelog'),
 bump = require('gulp-bump'),
 tagVersion = require('gulp-tag-version'),
 filter = require('gulp-filter'),
+del = require('del'),
 fs = require('fs'),
 loadPlugins = require('gulp-load-plugins'),
 package = require('./package.json'),
@@ -61,13 +62,11 @@ gulp.task('version', function (cb) {
 */
 
 gulp.task('clean:js:package', function () {
-    return gulp.src(path.clean.js.package, options.clean.general.src)
-    .pipe(plugins.rimraf(options.clean.general.plugin));
+    return del(options.clean.general.plugin);
 });
 
 gulp.task('clean:js:test', function () {
-    return gulp.src(path.clean.js.test, options.clean.general.src)
-    .pipe(plugins.rimraf(options.clean.general.plugin));
+    return del(options.clean.general.plugin);
 });
 
 gulp.task('clean:js', function (cb) {
