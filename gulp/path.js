@@ -71,6 +71,8 @@ Path.clean = {
 		],
 		test: [
 			Path.dest.js.test + '**/*.js',
+		],
+		pretest: [
 			Path.dest.folder + 'dist/test/'
 		]
 	}

@@ -154,7 +154,7 @@ CssUrlVersioner.prototype.getTheLastPart = function(quote, numeral, singleQuote,
 };
 
 CssUrlVersioner.prototype.insertVersion = function() {
-  var arrayUrl, dot, doubleQuotes, extension, newRegEx, newString, numeral, patternExt, patternQuotes, patternRightBracket, patternSimbols, patternUrl, quote, singleQuote, theLastPartOfTheRegExp, url, _i, _len;
+  var arrayUrl, dot, doubleQuotes, extension, i, len, newRegEx, newString, numeral, patternExt, patternQuotes, patternRightBracket, patternSimbols, patternUrl, quote, singleQuote, theLastPartOfTheRegExp, url;
   patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g;
   patternQuotes = /(\"|\')/g;
   patternExt = /(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?/g;
@@ -164,8 +164,8 @@ CssUrlVersioner.prototype.insertVersion = function() {
   dot = /\./;
   patternRightBracket = /[\)]{1}/;
   arrayUrl = this.options.content.match(patternUrl) || [];
-  for (_i = 0, _len = arrayUrl.length; _i < _len; _i++) {
-    url = arrayUrl[_i];
+  for (i = 0, len = arrayUrl.length; i < len; i++) {
+    url = arrayUrl[i];
     quote = this.getQuote(url, patternQuotes);
     numeral = this.getNumeral(url, patternSimbols);
     extension = this.getExtension(url, patternExt, patternQuotes);

@@ -61,16 +61,20 @@ gulp.task('version', function (cb) {
 * tarea principal: gulp clean
 */
 
-gulp.task('clean:js:package', function () {
-    return del(options.clean.general.plugin);
+gulp.task('clean:js:package', function (cb) {
+    return del(path.clean.js.package, cb());
 });
 
-gulp.task('clean:js:test', function () {
-    return del(options.clean.general.plugin);
+gulp.task('clean:js:test', function (cb) {
+    return del(path.clean.js.test, cb());
+});
+
+gulp.task('clean:js:pretest', function (cb) {
+    return del(path.clean.js.pretest, cb());
 });
 
 gulp.task('clean:js', function (cb) {
-    return plugins.runSequence(['clean:js:package', 'clean:js:test'], cb);
+    return plugins.runSequence(['clean:js:package', 'clean:js:test', 'clean:js:pretest'], cb);
 });
 
 gulp.task('clean', function (cb) {
@@ -141,7 +145,7 @@ gulp.task('complexity', function(){
 
 
 gulp.task('js', function(cb) {
-    plugins.runSequence('clean:js', 'coffee', 'copy:js:test', 'clean:js:test', 'lint', cb);
+    plugins.runSequence('clean:js', 'coffee', 'copy:js:test', 'lint', 'clean:js:pretest', cb);
 });
 
 
