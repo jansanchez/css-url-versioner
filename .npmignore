@@ -17,3 +17,5 @@ node_modules/
 demo/
 npm-debug.log
 source/
+.dependencies.sh
+.reinstall
