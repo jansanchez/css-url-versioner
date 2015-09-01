@@ -18,11 +18,14 @@ rimraf  = require('rimraf')
 ###
 
 Execute = (settings) ->
-	@reset()
+	@doneFile   = 'done'
+	@outputFile = 'output'
+	@pathDone   = process.cwd() + '/' + @doneFile
+	@pathOutput = process.cwd() + '/' + @outputFile
 	@
 
 Execute::runCommand = (command) ->
-	newCommand = command + " 2>&1 1>output && echo done > done"
+	newCommand = command + " 2>&1 1> " + @outputFile + " && echo done > " + @doneFile
 
 	execute(newCommand)
 	@readFile()
@@ -33,31 +36,43 @@ Execute::readFile = () ->
 	flag = true
 	@output = 'error'
 
-	while (!fs.existsSync(process.cwd() + '/done'))
+	while (!fs.existsSync(@pathDone))
 		@attempts++
-		if @attempts > 250
+		if @attempts > 300
 			flag = false
 			break
 
-	@validateFlag(flag)
+	return @validateFlag(flag)
 
-	return
+	
 
 
 Execute::validateFlag = (flag) ->
 	if flag
-		@output = fs.readFileSync(process.cwd() + '/output', {encoding: 'utf8'}).toString().replace(/\n/gi, '')
+		try
+			@output = fs.readFileSync(@pathOutput, {encoding: 'utf8'}).toString().replace(/\n/gi, '')
+			return true
+		catch e
+			#console.log('validateFlag')
+			#console.log(e)
+	else
+		return false
 	return
 
 Execute::reset = () ->
-	rimraf(process.cwd() + '/done', ()->
-		return
-	)
-	rimraf(process.cwd() + '/output', ()->
-		return
-	)
+	try
+		rimraf(@pathDone, () ->
+			return
+		)
+		rimraf(@pathOutput, () ->
+			return
+		)
+	catch e
+		#console.log('reset')
+		console.log(e)
+	
 	@attempts = 0
-	return
+	return true
 
 ###
 # Expose library.

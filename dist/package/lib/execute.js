@@ -24,13 +24,16 @@ rimraf = require('rimraf');
  */
 
 Execute = function(settings) {
-  this.reset();
+  this.doneFile = 'done';
+  this.outputFile = 'output';
+  this.pathDone = process.cwd() + '/' + this.doneFile;
+  this.pathOutput = process.cwd() + '/' + this.outputFile;
   return this;
 };
 
 Execute.prototype.runCommand = function(command) {
   var newCommand;
-  newCommand = command + " 2>&1 1>output && echo done > done";
+  newCommand = command + " 2>&1 1> " + this.outputFile + " && echo done > " + this.doneFile;
   execute(newCommand);
   this.readFile();
   this.reset();
@@ -41,28 +44,43 @@ Execute.prototype.readFile = function() {
   var flag;
   flag = true;
   this.output = 'error';
-  while (!fs.existsSync(process.cwd() + '/done')) {
+  while (!fs.existsSync(this.pathDone)) {
     this.attempts++;
-    if (this.attempts > 250) {
+    if (this.attempts > 300) {
       flag = false;
       break;
     }
   }
-  this.validateFlag(flag);
+  return this.validateFlag(flag);
 };
 
 Execute.prototype.validateFlag = function(flag) {
+  var e;
   if (flag) {
-    this.output = fs.readFileSync(process.cwd() + '/output', {
-      encoding: 'utf8'
-    }).toString().replace(/\n/gi, '');
+    try {
+      this.output = fs.readFileSync(this.pathOutput, {
+        encoding: 'utf8'
+      }).toString().replace(/\n/gi, '');
+      return true;
+    } catch (_error) {
+      e = _error;
+    }
+  } else {
+    return false;
   }
 };
 
 Execute.prototype.reset = function() {
-  rimraf(process.cwd() + '/done', function() {});
-  rimraf(process.cwd() + '/output', function() {});
+  var e;
+  try {
+    rimraf(this.pathDone, function() {});
+    rimraf(this.pathOutput, function() {});
+  } catch (_error) {
+    e = _error;
+    console.log(e);
+  }
   this.attempts = 0;
+  return true;
 };
 
 
