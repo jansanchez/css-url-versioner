@@ -41,7 +41,7 @@ Execute.prototype.readFile = function() {
   var flag;
   flag = true;
   this.output = 'error';
-  while (!fs.existsSync('./done')) {
+  while (!fs.existsSync(process.cwd() + '/done')) {
     this.attempts++;
     if (this.attempts > 250) {
       flag = false;
@@ -53,15 +53,15 @@ Execute.prototype.readFile = function() {
 
 Execute.prototype.validateFlag = function(flag) {
   if (flag) {
-    this.output = fs.readFileSync('./output', {
+    this.output = fs.readFileSync(process.cwd() + '/output', {
       encoding: 'utf8'
     }).toString().replace(/\n/gi, '');
   }
 };
 
 Execute.prototype.reset = function() {
-  rimraf('./done', function() {});
-  rimraf('./output', function() {});
+  rimraf(process.cwd() + '/done', function() {});
+  rimraf(process.cwd() + '/output', function() {});
   this.attempts = 0;
 };
 

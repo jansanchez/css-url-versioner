@@ -33,12 +33,12 @@ Execute::readFile = () ->
 	flag = true
 	@output = 'error'
 
-	while (!fs.existsSync('./done'))
+	while (!fs.existsSync(process.cwd() + '/done'))
 		@attempts++
 		if @attempts > 250
 			flag = false
 			break
-	
+
 	@validateFlag(flag)
 
 	return
@@ -46,14 +46,14 @@ Execute::readFile = () ->
 
 Execute::validateFlag = (flag) ->
 	if flag
-		@output = fs.readFileSync('./output', {encoding: 'utf8'}).toString().replace(/\n/gi, '')
+		@output = fs.readFileSync(process.cwd() + '/output', {encoding: 'utf8'}).toString().replace(/\n/gi, '')
 	return
 
 Execute::reset = () ->
-	rimraf('./done', ()->
+	rimraf(process.cwd() + '/done', ()->
 		return
 	)
-	rimraf('./output', ()->
+	rimraf(process.cwd() + '/output', ()->
 		return
 	)
 	@attempts = 0
