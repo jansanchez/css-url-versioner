@@ -102,9 +102,12 @@ CssUrlVersioner.prototype.getNumeral = function(url, pattern) {
 
 CssUrlVersioner.prototype.getExtension = function(url, pattern, patternQuotes) {
   var ArrayOfExtensions, extension, extensions;
-  ArrayOfExtensions = url.match(pattern);
-  extensions = ArrayOfExtensions.slice(ArrayOfExtensions.length - 1);
-  extension = extensions[0].substr(1).replace(patternQuotes, '');
+  extension = '';
+  if (pattern.test(url) === true) {
+    ArrayOfExtensions = url.match(pattern);
+    extensions = ArrayOfExtensions.slice(ArrayOfExtensions.length - 1);
+    extension = extensions[0].substr(1).replace(patternQuotes, '');
+  }
   return extension;
 };
 

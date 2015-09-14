@@ -97,12 +97,11 @@ CssUrlVersioner::getNumeral = (url, pattern) ->
 	return numeral
 
 CssUrlVersioner::getExtension = (url, pattern, patternQuotes) ->
-
-	ArrayOfExtensions = url.match(pattern)
-	extensions = ArrayOfExtensions.slice(ArrayOfExtensions.length-1)
-
-	extension = extensions[0].substr(1).replace(patternQuotes, '')
-
+	extension = ''
+	if pattern.test(url) is true
+		ArrayOfExtensions = url.match(pattern)
+		extensions = ArrayOfExtensions.slice(ArrayOfExtensions.length-1)
+		extension = extensions[0].substr(1).replace(patternQuotes, '')
 	return extension
 
 CssUrlVersioner::getNewString = (numeral, quote, extension) ->
