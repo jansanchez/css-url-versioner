@@ -104,7 +104,7 @@ describe('cssUrl', function() {
         });
       });
     });
-    withSingleQuotes = ["url('sprite.png')", "url('sprite.png" + queryString + "')", "url('fonts/new.eot#ie')", "url('fonts/new.eot" + queryString + "#ie')", "url('img/abc.dfg.png')", "url('img/abc.dfg.png" + queryString + "')", "url('img/klm.nop.png#slug')", "url('img/klm.nop.png" + queryString + "#slug')"];
+    withSingleQuotes = ["url('sprite.png')", "url('sprite.png" + queryString + "')", "url('fonts/new.eot#ie')", "url('fonts/new.eot" + queryString + "#ie')", "url('img/abc.dfg.png')", "url('img/abc.dfg.png" + queryString + "')", "url('img/klm.nop.png#slug')", "url('img/klm.nop.png" + queryString + "#slug')", "url('file with space.woff')", "url('file with space.woff" + queryString + "')"];
     describe("With single quotes: '", function() {
       describe(withSingleQuotes[0], function() {
         var instance;
@@ -142,8 +142,17 @@ describe('cssUrl', function() {
           instance.output.should.be.equal(withSingleQuotes[7]);
         });
       });
+      describe(withSingleQuotes[8], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withSingleQuotes[8]
+        });
+        it(withSingleQuotes[8] + ' should be convert to: ' + withSingleQuotes[9] + '.', function() {
+          instance.output.should.be.equal(withSingleQuotes[9]);
+        });
+      });
     });
-    withDoubleQuotes = ['url("sprite.png")', 'url("sprite.png' + queryString + '")', 'url("fonts/new.eot#ie")', 'url("fonts/new.eot' + queryString + '#ie")', 'url("img/abc.dfg.png")', 'url("img/abc.dfg.png' + queryString + '")', 'url("img/klm.nop.png#slug")', 'url("img/klm.nop.png' + queryString + '#slug")'];
+    withDoubleQuotes = ['url("sprite.png")', 'url("sprite.png' + queryString + '")', 'url("fonts/new.eot#ie")', 'url("fonts/new.eot' + queryString + '#ie")', 'url("img/abc.dfg.png")', 'url("img/abc.dfg.png' + queryString + '")', 'url("img/klm.nop.png#slug")', 'url("img/klm.nop.png' + queryString + '#slug")', 'url("file with space.woff")', 'url("file with space.woff' + queryString + '")'];
     describe('With double quotes: "', function() {
       describe(withDoubleQuotes[0], function() {
         var instance;
@@ -179,6 +188,15 @@ describe('cssUrl', function() {
         });
         it(withDoubleQuotes[6] + ' should be convert to: ' + withDoubleQuotes[7] + '.', function() {
           instance.output.should.be.equal(withDoubleQuotes[7]);
+        });
+      });
+      describe(withDoubleQuotes[8], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withDoubleQuotes[8]
+        });
+        it(withDoubleQuotes[8] + ' should be convert to: ' + withDoubleQuotes[9] + '.', function() {
+          instance.output.should.be.equal(withDoubleQuotes[9]);
         });
       });
     });
