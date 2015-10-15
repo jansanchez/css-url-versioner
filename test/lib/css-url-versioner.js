@@ -66,10 +66,10 @@ describe('cssUrl', function() {
     return function() {
       var instance;
       instance = cssVersioner({
-        content: arr[indx * 2]
+        content: arr[indx]
       });
-      return it(arr[indx * 2] + ' should be convert to: ' + arr[indx * 2 + 1] + '.', function() {
-        return instance.output.should.be.equal(arr[indx * 2 + 1]);
+      return it(arr[indx] + ' should be convert to: ' + arr[indx + 1] + '.', function() {
+        return instance.output.should.be.equal(arr[indx + 1]);
       });
     };
   };
@@ -80,21 +80,21 @@ describe('cssUrl', function() {
     describe('Without quotes:', function() {
       var i, j, ref;
       for (i = j = 0, ref = withoutQuotes.length / 2 - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
-        describe(withoutQuotes[i], assertVersioned(withoutQuotes, i));
+        describe(withoutQuotes[i * 2], assertVersioned(withoutQuotes, i * 2));
       }
     });
     withSingleQuotes = ["url('sprite.png')", "url('sprite.png" + queryString + "')", "url('fonts/new.eot#ie')", "url('fonts/new.eot" + queryString + "#ie')", "url('img/abc.dfg.png')", "url('img/abc.dfg.png" + queryString + "')", "url('img/klm.nop.png#slug')", "url('img/klm.nop.png" + queryString + "#slug')", "url('file with space.woff')", "url('file with space.woff" + queryString + "')"];
     describe("With single quotes: '", function() {
       var i, j, ref;
       for (i = j = 0, ref = withSingleQuotes.length / 2 - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
-        describe(withSingleQuotes[i], assertVersioned(withSingleQuotes, i));
+        describe(withSingleQuotes[i * 2], assertVersioned(withSingleQuotes, i * 2));
       }
     });
     withDoubleQuotes = ['url("sprite.png")', 'url("sprite.png' + queryString + '")', 'url("fonts/new.eot#ie")', 'url("fonts/new.eot' + queryString + '#ie")', 'url("img/abc.dfg.png")', 'url("img/abc.dfg.png' + queryString + '")', 'url("img/klm.nop.png#slug")', 'url("img/klm.nop.png' + queryString + '#slug")', 'url("file with space.woff")', 'url("file with space.woff' + queryString + '")'];
     describe('With double quotes: "', function() {
       var i, j, ref;
       for (i = j = 0, ref = withDoubleQuotes.length / 2 - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
-        describe(withDoubleQuotes[i], assertVersioned(withDoubleQuotes, i));
+        describe(withDoubleQuotes[i * 2], assertVersioned(withDoubleQuotes, i * 2));
       }
     });
   });

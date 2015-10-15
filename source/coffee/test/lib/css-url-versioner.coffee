@@ -81,11 +81,11 @@ describe('cssUrl', () ->
 	assertVersioned = (arr, indx) ->
 		return () ->
 			instance = cssVersioner({
-				content: arr[indx * 2]
+				content: arr[indx]
 			})
 
-			it(arr[indx * 2] + ' should be convert to: ' + arr[indx * 2 + 1] + '.', () ->
-				instance.output.should.be.equal(arr[indx * 2 + 1])
+			it(arr[indx] + ' should be convert to: ' + arr[indx + 1] + '.', () ->
+				instance.output.should.be.equal(arr[indx + 1])
 			)
 
 	describe('Generated versions', () ->
@@ -104,7 +104,7 @@ describe('cssUrl', () ->
 
 			for i in [0..withoutQuotes.length / 2 - 1]
 
-				describe(withoutQuotes[i], assertVersioned(withoutQuotes, i))
+				describe(withoutQuotes[i * 2], assertVersioned(withoutQuotes, i * 2))
 
 			return
 		)
@@ -121,7 +121,7 @@ describe('cssUrl', () ->
 
 			for i in [0..withSingleQuotes.length / 2 - 1]
 
-				describe(withSingleQuotes[i], assertVersioned(withSingleQuotes, i))
+				describe(withSingleQuotes[i * 2], assertVersioned(withSingleQuotes, i * 2))
 
 			return
 		)
@@ -138,7 +138,7 @@ describe('cssUrl', () ->
 
 			for i in [0..withDoubleQuotes.length / 2 - 1]
 
-				describe(withDoubleQuotes[i], assertVersioned(withDoubleQuotes, i))
+				describe(withDoubleQuotes[i * 2], assertVersioned(withDoubleQuotes, i * 2))
 
 			return
 		)
