@@ -8,13 +8,13 @@
 
 ### Install:
 
-```
+```bash
 npm install --save-dev css-url-versioner
 ```
 
 ### How to use:
 
-```
+```js
 var cssVersioner = require('css-url-versioner');
 
 fs.readFile('test/css/test.css', 'utf8', function (err, data) {
@@ -28,7 +28,7 @@ fs.readFile('test/css/test.css', 'utf8', function (err, data) {
 
 ### or
 
-```
+```js
 var data = '.some_selector{background-image: url("img/sprite.png");}';
 
 var cssVersioned = cssVersioner({
@@ -49,7 +49,7 @@ Required: `true`
 
 Here go the css content we want versioning
 
-```
+```js
 {content: '.some_selector{background-image: url("img/sprite.png");}'}
 ```
 
@@ -58,7 +58,7 @@ Default: `v`
 
 Here go the variable of our version, for '?myVariable=yyyymmdd'
 
-```
+```js
 {variable: 'myVariable'}
 ```
 
@@ -67,7 +67,7 @@ Default: `yyyymmdd`
 
 Here you go a custom version if you so desire, but if we do not put this key, then the default version will be the current date.
 
-```
+```js
 {version: '0.0.2'}
 ```
 
@@ -76,7 +76,7 @@ Default: `false`
 
 If we want that version to be our short version of last commit in git, configured 'lastcommit' to true.
 
-```
+```js
 {lastcommit: true}
 ```
 
@@ -84,7 +84,7 @@ If we want that version to be our short version of last commit in git, configure
 
 #### lastcommit: true
 
-```
+```js
 var data = '.some_selector{background-image: url("img/sprite.png");}';
 
 var cssVersioned = cssVersioner({
@@ -99,7 +99,8 @@ console.log(cssVersioned.output);
 ```
 
 #### lastcommit: true and variable: 'myVersion'
-```
+
+```js
 var data = '@font-face{ 
     			font-family: 'gotham'; 
 				src: url("fonts/gotham.svg#gotham") format('svg');
@@ -118,7 +119,8 @@ console.log(cssVersioned.output);
 ```
 
 #### version: Math.random()
-```
+
+```js
 var data = '.some_selector{background-image: url("img/sprite.png");}';
 
 var cssVersioned = cssVersioner({
