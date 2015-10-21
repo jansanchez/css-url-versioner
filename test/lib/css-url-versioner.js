@@ -22,7 +22,7 @@ mainInstance = cssVersioner({
 });
 
 describe('cssUrl', function() {
-  var assertVersioned, options;
+  var options;
   options = {};
   beforeEach(function() {});
   describe('Extend', function() {
@@ -62,40 +62,125 @@ describe('cssUrl', function() {
       mainInstance.queryString.should.be.equal(queryString);
     });
   });
-  assertVersioned = function(arr, indx) {
-    return function() {
-      var instance;
-      instance = cssVersioner({
-        content: arr[indx]
-      });
-      return it(arr[indx] + ' should be convert to: ' + arr[indx + 1] + '.', function() {
-        return instance.output.should.be.equal(arr[indx + 1]);
-      });
-    };
-  };
   describe('Generated versions', function() {
     var queryString, withDoubleQuotes, withSingleQuotes, withoutQuotes;
     queryString = '?v=' + version;
-    withoutQuotes = ['url(sprite.png)', 'url(sprite.png' + queryString + ')', 'url(fonts/new.eot#ie)', 'url(fonts/new.eot' + queryString + '#ie)', 'url(img/abc.dfg.png)', 'url(img/abc.dfg.png' + queryString + ')', 'url(img/klm.nop.png#slug)', 'url(img/klm.nop.png' + queryString + '#slug)', 'url(file with space.woff)', 'url(file with space.woff' + queryString + ')'];
+    withoutQuotes = ['url(sprite.png)', 'url(sprite.png' + queryString + ')', 'url(fonts/new.eot#ie)', 'url(fonts/new.eot' + queryString + '#ie)', 'url(img/abc.dfg.png)', 'url(img/abc.dfg.png' + queryString + ')', 'url(img/klm.nop.png#slug)', 'url(img/klm.nop.png' + queryString + '#slug)'];
     describe('Without quotes:', function() {
-      var i, j, ref;
-      for (i = j = 0, ref = withoutQuotes.length / 2 - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
-        describe(withoutQuotes[i * 2], assertVersioned(withoutQuotes, i * 2));
-      }
+      describe(withoutQuotes[0], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withoutQuotes[0]
+        });
+        it(withoutQuotes[0] + ' should be convert to: ' + withoutQuotes[1] + '.', function() {
+          instance.output.should.be.equal(withoutQuotes[1]);
+        });
+      });
+      describe(withoutQuotes[2], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withoutQuotes[2]
+        });
+        it(withoutQuotes[2] + ' should be convert to: ' + withoutQuotes[3] + '.', function() {
+          instance.output.should.be.equal(withoutQuotes[3]);
+        });
+      });
+      describe(withoutQuotes[4], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withoutQuotes[4]
+        });
+        it(withoutQuotes[4] + ' should be convert to: ' + withoutQuotes[5] + '.', function() {
+          instance.output.should.be.equal(withoutQuotes[5]);
+        });
+      });
+      describe(withoutQuotes[6], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withoutQuotes[6]
+        });
+        it(withoutQuotes[6] + ' should be convert to: ' + withoutQuotes[7] + '.', function() {
+          instance.output.should.be.equal(withoutQuotes[7]);
+        });
+      });
     });
-    withSingleQuotes = ["url('sprite.png')", "url('sprite.png" + queryString + "')", "url('fonts/new.eot#ie')", "url('fonts/new.eot" + queryString + "#ie')", "url('img/abc.dfg.png')", "url('img/abc.dfg.png" + queryString + "')", "url('img/klm.nop.png#slug')", "url('img/klm.nop.png" + queryString + "#slug')", "url('file with space.woff')", "url('file with space.woff" + queryString + "')"];
+    withSingleQuotes = ["url('sprite.png')", "url('sprite.png" + queryString + "')", "url('fonts/new.eot#ie')", "url('fonts/new.eot" + queryString + "#ie')", "url('img/abc.dfg.png')", "url('img/abc.dfg.png" + queryString + "')", "url('img/klm.nop.png#slug')", "url('img/klm.nop.png" + queryString + "#slug')"];
     describe("With single quotes: '", function() {
-      var i, j, ref;
-      for (i = j = 0, ref = withSingleQuotes.length / 2 - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
-        describe(withSingleQuotes[i * 2], assertVersioned(withSingleQuotes, i * 2));
-      }
+      describe(withSingleQuotes[0], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withSingleQuotes[0]
+        });
+        it(withSingleQuotes[0] + ' should be convert to: ' + withSingleQuotes[1] + '.', function() {
+          instance.output.should.be.equal(withSingleQuotes[1]);
+        });
+      });
+      describe(withSingleQuotes[2], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withSingleQuotes[2]
+        });
+        it(withSingleQuotes[2] + ' should be convert to: ' + withSingleQuotes[3] + '.', function() {
+          instance.output.should.be.equal(withSingleQuotes[3]);
+        });
+      });
+      describe(withSingleQuotes[4], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withSingleQuotes[4]
+        });
+        it(withSingleQuotes[4] + ' should be convert to: ' + withSingleQuotes[5] + '.', function() {
+          instance.output.should.be.equal(withSingleQuotes[5]);
+        });
+      });
+      describe(withSingleQuotes[6], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withSingleQuotes[6]
+        });
+        it(withSingleQuotes[6] + ' should be convert to: ' + withSingleQuotes[7] + '.', function() {
+          instance.output.should.be.equal(withSingleQuotes[7]);
+        });
+      });
     });
-    withDoubleQuotes = ['url("sprite.png")', 'url("sprite.png' + queryString + '")', 'url("fonts/new.eot#ie")', 'url("fonts/new.eot' + queryString + '#ie")', 'url("img/abc.dfg.png")', 'url("img/abc.dfg.png' + queryString + '")', 'url("img/klm.nop.png#slug")', 'url("img/klm.nop.png' + queryString + '#slug")', 'url("file with space.woff")', 'url("file with space.woff' + queryString + '")'];
+    withDoubleQuotes = ['url("sprite.png")', 'url("sprite.png' + queryString + '")', 'url("fonts/new.eot#ie")', 'url("fonts/new.eot' + queryString + '#ie")', 'url("img/abc.dfg.png")', 'url("img/abc.dfg.png' + queryString + '")', 'url("img/klm.nop.png#slug")', 'url("img/klm.nop.png' + queryString + '#slug")'];
     describe('With double quotes: "', function() {
-      var i, j, ref;
-      for (i = j = 0, ref = withDoubleQuotes.length / 2 - 1; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
-        describe(withDoubleQuotes[i * 2], assertVersioned(withDoubleQuotes, i * 2));
-      }
+      describe(withDoubleQuotes[0], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withDoubleQuotes[0]
+        });
+        it(withDoubleQuotes[0] + ' should be convert to: ' + withDoubleQuotes[1] + '.', function() {
+          instance.output.should.be.equal(withDoubleQuotes[1]);
+        });
+      });
+      describe(withDoubleQuotes[2], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withDoubleQuotes[2]
+        });
+        it(withDoubleQuotes[2] + ' should be convert to: ' + withDoubleQuotes[3] + '.', function() {
+          instance.output.should.be.equal(withDoubleQuotes[3]);
+        });
+      });
+      describe(withDoubleQuotes[4], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withDoubleQuotes[4]
+        });
+        it(withDoubleQuotes[4] + ' should be convert to: ' + withDoubleQuotes[5] + '.', function() {
+          instance.output.should.be.equal(withDoubleQuotes[5]);
+        });
+      });
+      describe(withDoubleQuotes[6], function() {
+        var instance;
+        instance = cssVersioner({
+          content: withDoubleQuotes[6]
+        });
+        it(withDoubleQuotes[6] + ' should be convert to: ' + withDoubleQuotes[7] + '.', function() {
+          instance.output.should.be.equal(withDoubleQuotes[7]);
+        });
+      });
     });
   });
 });

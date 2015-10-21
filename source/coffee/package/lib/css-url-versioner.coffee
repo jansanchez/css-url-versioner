@@ -152,7 +152,7 @@ CssUrlVersioner::getTheLastPart = (quote, numeral, singleQuote, doubleQuotes, pa
 
 CssUrlVersioner::insertVersion = () ->
 
-	patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/\s_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g
+	patternUrl = /url([\(]{1})([\"|\']?)([a-zA-Z0-9\@\.\/_-]+)([\#]?[a-zA-Z0-9_-]+)?([\"|\']?)([\)]{1})/g
 	patternQuotes = /(\"|\')/g
 	patternExt = /(\.{1}[a-zA-Z0-9]{2,4})(\"|\')?/g
 	patternSimbols = /([\#]{1})/g

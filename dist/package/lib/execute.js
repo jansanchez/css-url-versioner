@@ -55,15 +55,15 @@ Execute.prototype.readFile = function() {
 };
 
 Execute.prototype.validateFlag = function(flag) {
-  var e, error;
+  var e;
   if (flag) {
     try {
       this.output = fs.readFileSync(this.pathOutput, {
         encoding: 'utf8'
       }).toString().replace(/\n/gi, '');
       return true;
-    } catch (error) {
-      e = error;
+    } catch (_error) {
+      e = _error;
     }
   } else {
     return false;
@@ -71,12 +71,12 @@ Execute.prototype.validateFlag = function(flag) {
 };
 
 Execute.prototype.reset = function() {
-  var e, error;
+  var e;
   try {
     rimraf(this.pathDone, function() {});
     rimraf(this.pathOutput, function() {});
-  } catch (error) {
-    e = error;
+  } catch (_error) {
+    e = _error;
     console.log(e);
   }
   this.attempts = 0;
