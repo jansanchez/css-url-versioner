@@ -29,6 +29,7 @@ fs.readFile('test/css/test.css', 'utf8', function (err, data) {
 ### or
 
 ```js
+var cssVersioner = require('css-url-versioner');
 var data = '.some_selector{background-image: url("img/sprite.png");}';
 
 var cssVersioned = cssVersioner({
@@ -85,6 +86,7 @@ If we want that version to be our short version of last commit in git, configure
 #### lastcommit: true
 
 ```js
+var cssVersioner = require('css-url-versioner');
 var data = '.some_selector{background-image: url("img/sprite.png");}';
 
 var cssVersioned = cssVersioner({
@@ -101,6 +103,7 @@ console.log(cssVersioned.output);
 #### lastcommit: true and variable: 'myVersion'
 
 ```js
+var cssVersioner = require('css-url-versioner');
 var data = '@font-face{ 
     			font-family: 'gotham'; 
 				src: url("fonts/gotham.svg#gotham") format('svg');
@@ -121,6 +124,7 @@ console.log(cssVersioned.output);
 #### version: Math.random()
 
 ```js
+var cssVersioner = require('css-url-versioner');
 var data = '.some_selector{background-image: url("img/sprite.png");}';
 
 var cssVersioned = cssVersioner({
