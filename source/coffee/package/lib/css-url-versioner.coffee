@@ -49,7 +49,7 @@ CssUrlVersioner::generateVersion = () ->
 
 CssUrlVersioner::getLastCommit = () ->
 	command = "git log -1 --format=%h"
-
+	
 	exec = new Execute()
 	@sha1 = exec.runCommand(command)
 	

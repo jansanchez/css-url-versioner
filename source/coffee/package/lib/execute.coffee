@@ -22,6 +22,7 @@ Execute = (settings) ->
 	@outputFile = 'output'
 	@pathDone   = process.cwd() + '/' + @doneFile
 	@pathOutput = process.cwd() + '/' + @outputFile
+	@attempts   = 0
 	@
 
 Execute::runCommand = (command) ->

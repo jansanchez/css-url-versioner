@@ -28,6 +28,7 @@ Execute = function(settings) {
   this.outputFile = 'output';
   this.pathDone = process.cwd() + '/' + this.doneFile;
   this.pathOutput = process.cwd() + '/' + this.outputFile;
+  this.attempts = 0;
   return this;
 };
 
